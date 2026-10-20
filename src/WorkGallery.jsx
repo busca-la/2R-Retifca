@@ -22,6 +22,12 @@ const posterFiles = import.meta.glob('./assets/2r/*.jpg', {
 
 const entries = [
   {
+    file: 'hero-bloque-2r.webp',
+    title: 'BLOQUE DE MOTOR',
+    description: 'Bloque de cuatro cilindros en ambiente de taller',
+    layout: 'landscape'
+  },
+  {
     file: 'tapa-rectificada-01.webp',
     title: 'TRABAJO EN TAPA DE MOTOR',
     description: 'Superficie y componentes de una tapa de motor',
@@ -66,7 +72,7 @@ const entries = [
 ];
 const videos = [
   { file: 'proceso-cepillado-01.mp4', poster: 'proceso-cepillado-01.jpg', label: 'PROCESO / 01' },
-  { file: 'proceso-cepillado-02.mp4', poster: 'proceso-cepillado-02.jpg', label: 'PROCESO / 02' }
+  { file: 'proceso-cepillado-02.mp4', poster: 'proceso-cepillado-02.jpg', label: 'BLOQUE DE MOTOR / 02' }
 ];
 
 export default function WorkGallery() {
@@ -90,8 +96,7 @@ export default function WorkGallery() {
             <h2 id="work-heading">TRABAJOS<br/><em>REALES.</em></h2>
           </div>
           <p className="work-intro">
-            Una mirada a nuestro trabajo. Fotografías y videos reales de tapas,
-            componentes y procesos de motor.
+            Una mirada a los trabajos y componentes de motor, con fotografías y videos compartidos por 2R.
           </p>
         </div>
         {photos.length > 0 && (
