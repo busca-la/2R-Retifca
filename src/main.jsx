@@ -10,6 +10,7 @@ import WorkGallery from './WorkGallery';
 
 // Prefer authentic 2R customer photographs once files are added to src/assets/2r.
 const realPhotos = import.meta.glob('./assets/2r/*.webp', { eager: true, query: '?url', import: 'default' });
+const hasWorkMedia = Object.keys(realPhotos).length > 0 || Object.keys(import.meta.glob('./assets/2r/*.mp4')).length > 0;
 
 const contact = {
   whatsapp: (import.meta.env.VITE_WHATSAPP_NUMBER || '595984225745').replace(/\D/g, ''),
@@ -85,7 +86,7 @@ function Header() {
       <div className="header-inner site-container">
         <Brand />
         <nav className={'nav-links' + (open ? ' nav-open' : '')} aria-label="Navegación principal" id="main-navigation">
-          {nav.map(item => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
+          {nav.filter(item => item.href !== '#trabajos' || hasWorkMedia).map(item => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
           <a className="mobile-nav-cta" href="#contacto" onClick={() => setOpen(false)}>Solicitar presupuesto <ArrowUpRight size={18} /></a>
         </nav>
         <a className="header-cta" href="#contacto">HABLEMOS <ArrowUpRight size={17} strokeWidth={2.3}/></a>
@@ -314,7 +315,7 @@ function Footer() {
     <footer className="footer">
       <div className="site-container footer-main">
         <div><Brand compact /><p>PRECISIÓN QUE MUEVE MOTORES.</p></div>
-        <div className="footer-links"><a href="#inicio">INICIO</a><a href="#servicios">SERVICIOS</a><a href="#trabajos">TRABAJOS</a><a href="#nosotros">NOSOTROS</a><a href="#marcas">MARCAS</a><a href="#contacto">CONTACTO</a><a href={contact.facebook} target="_blank" rel="noopener noreferrer">FACEBOOK</a><a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">UBICACIÓN</a></div>
+        <div className="footer-links"><a href="#inicio">INICIO</a><a href="#servicios">SERVICIOS</a>{hasWorkMedia && <a href="#trabajos">TRABAJOS</a>}<a href="#nosotros">NOSOTROS</a><a href="#marcas">MARCAS</a><a href="#contacto">CONTACTO</a><a href={contact.facebook} target="_blank" rel="noopener noreferrer">FACEBOOK</a><a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">UBICACIÓN</a></div>
         <a className="back-top" href="#inicio" aria-label="Volver arriba"><ArrowUpRight size={27}/></a>
       </div>
       <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} RECTIFICADORA DE MOTORES 2R</span><span>DISEÑADO PARA MOVERSE HACIA ADELANTE <ArrowUpRight size={13}/></span></div>
