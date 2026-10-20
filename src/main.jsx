@@ -49,24 +49,15 @@ const services = [
 function LogoMark({ compact = false }) {
   return (
     <span className={'logo-mark' + (compact ? ' logo-mark-small' : '')} aria-hidden="true">
-      <svg viewBox="0 0 96 96" fill="none" focusable="false">
-        <path d="M48 5L57 13L69 11L75 22L86 27L85 40L93 48L85 56L86 69L75 74L69 85L57 83L48 91L39 83L27 85L21 74L10 69L11 56L3 48L11 40L10 27L21 22L27 11L39 13Z" fill="#F6D21B"/>
-        <circle cx="48" cy="48" r="31" fill="#10110E"/>
-        <circle cx="48" cy="48" r="27.5" stroke="#F6D21B" strokeWidth="1.5"/>
-        <text x="48" y="60" fill="#F6D21B" fontSize="36" fontFamily="Arial Black, Arial, sans-serif" fontWeight="900" textAnchor="middle" letterSpacing="-3">2R</text>
-      </svg>
+      <img src="/logo-2r.svg" alt="" width="740" height="545" decoding="async" />
     </span>
   );
 }
 
 function Brand({ compact = false }) {
   return (
-    <a className={'brand' + (compact ? ' brand-footer' : '')} href="#inicio" aria-label="2R Rectificadora de Motores — inicio">
+    <a className={'brand' + (compact ? ' brand-footer' : '')} href="#inicio" aria-label="Rectificadora de Motores 2R — inicio">
       <LogoMark compact={compact} />
-      <span className="brand-copy">
-        <strong>2R<span className="brand-period">.</span></strong>
-        <small>RECTIFICADORA<br />DE MOTORES</small>
-      </span>
     </a>
   );
 }
