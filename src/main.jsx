@@ -105,7 +105,7 @@ function Hero() {
   return (
     <section id="inicio" className="hero">
       <div className="hero-visual" aria-hidden="true">
-        {realPhotos['./assets/2r/bloque-cilindros-06.webp'] && <img src={realPhotos['./assets/2r/bloque-cilindros-06.webp']} alt="" fetchPriority="high" />}
+        {(realPhotos['./assets/2r/hero-bloque-2r.webp'] || realPhotos['./assets/2r/bloque-cilindros-06.webp']) && <img src={realPhotos['./assets/2r/hero-bloque-2r.webp'] || realPhotos['./assets/2r/bloque-cilindros-06.webp']} alt="" fetchPriority="high" />}
       </div>
       <div className="hero-grid" aria-hidden="true"></div>
       <div className="hero-container site-container">
