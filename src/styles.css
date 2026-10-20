@@ -382,3 +382,13 @@ body, #root, main { background: #050505; }
 @media (max-width:580px) {
   .hero-visual::after { background: linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.77) 85%),linear-gradient(0deg,#050505,transparent 68%); }
 }
+
+/* Real imagery fallback: never render an unrelated stock photograph. */
+.hero-visual { background: radial-gradient(ellipse at 75% 46%, #24231a 0%, #0d0d0d 44%, #050505 78%); }
+.about-photo { background: #111; }
+.about-photo-fallback { width:100%; height:100%; display:grid; place-items:center; background:radial-gradient(circle at 50% 43%,#1c1a11,#080808 72%); }
+.about-photo-fallback img { width:min(62%,450px); height:auto; max-height:70%; object-fit:contain; opacity:.75; }
+.about-photo:has(.about-photo-fallback):hover .about-photo-fallback img { transform:none; }
+@media(max-width:580px) {
+ .about-photo-fallback img {width:64%;}
+}
