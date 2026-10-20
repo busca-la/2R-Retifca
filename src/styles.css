@@ -332,3 +332,36 @@ img { display: block; max-width: 100%; }
   .business-hours { padding:17px 14px; }
   .contact-lines > a, .contact-lines > div { font-size:12px; }
 }
+
+/* Identidad oficial 2R: isotipo completo con el texto incorporado. */
+.brand { gap: 0; }
+.brand .logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 154px;
+  height: 83px;
+  flex: 0 0 auto;
+}
+.brand .logo-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+.brand .brand-copy { display: none; }
+.brand-footer .logo-mark,
+.brand .logo-mark-small { width: 164px; height: 115px; }
+.site-header.is-scrolled .brand .logo-mark { width: 130px; height: 70px; }
+@media (max-width: 900px) {
+  .brand .logo-mark { width: 133px; height: 75px; }
+  .site-header.is-scrolled .brand .logo-mark { width: 116px; height: 62px; }
+  .brand-footer .logo-mark,
+  .brand .logo-mark-small { width: 158px; height: 110px; }
+}
+@media (max-width: 580px) {
+  .brand .logo-mark { width: 108px; height: 70px; }
+  .site-header.is-scrolled .brand .logo-mark { width: 102px; height: 62px; }
+  .brand-footer .logo-mark,
+  .brand .logo-mark-small { width: 152px; height: 112px; }
+}
