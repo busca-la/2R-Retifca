@@ -300,3 +300,35 @@ img { display: block; max-width: 100%; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+
+/* Company-verified destinations and published contact details */
+.contact-lines > a > span { min-width:0; flex:1; line-height:1.5; }
+.contact-lines > a svg { flex:0 0 auto; }
+.contact-lines > a:last-child { border-bottom:1px solid rgba(0,0,0,.32); padding-bottom:16px; }
+.business-hours { display:flex; gap:15px; max-width:430px; margin-top:31px; padding:19px 20px; border:1px solid rgba(0,0,0,.32); }
+.business-hours > svg { flex-shrink:0; }
+.business-hours > div { display:flex; flex-direction:column; gap:8px; }
+.business-hours strong { font-size:10px; letter-spacing:.12em; font-weight:900; margin-bottom:4px; }
+.business-hours span { font-size:13px; font-weight:700; }
+.business-hours small { font-size:10px; line-height:1.6; opacity:.72; margin-top:4px; }
+.review-section { background:#20231c; color:#f4f5ec; padding:93px 0; }
+.review-inner { display:flex; align-items:end; justify-content:space-between; gap:40px; }
+.review-section h2 { font:900 clamp(68px, 7.4vw, 112px)/.85 var(--display); margin:28px 0 25px; }
+.review-section h2 em { color:var(--yellow); font-style:normal; }
+.review-section p { max-width:485px; color:#b4b8ac; font-size:14px; line-height:1.75; margin:0; }
+.review-button { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; gap:28px; padding:21px 26px; color:#151611; background:var(--yellow); font-size:12px; font-weight:900; letter-spacing:.075em; transition:background .2s, transform .2s; }
+.review-button:hover { transform:translateY(-3px); background:#ffe75b; }
+@media(max-width:900px) {
+  .review-inner { flex-direction:column; align-items:start; }
+  .review-section h2 { font-size:clamp(67px,11vw,100px); }
+}
+@media(max-width:580px) {
+  .review-section { padding:80px 0; }
+  .review-inner { gap:30px; }
+  .review-section h2 { font-size:clamp(66px,14vw,88px); }
+  .review-section p { font-size:13px; }
+  .review-button { width:100%; min-height:60px; font-size:11px; padding:18px; }
+  .business-hours { padding:17px 14px; }
+  .contact-lines > a, .contact-lines > div { font-size:12px; }
+}
