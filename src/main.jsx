@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
-  ArrowDownRight, ArrowRight, ArrowUpRight, Check, ChevronRight,
-  ClipboardCheck, Cog, Copy, Gauge, Instagram, Mail, MapPin,
-  Menu, MessageCircle, MoveUpRight, Wrench, X
+  ArrowDownRight, ArrowRight, ArrowUpRight, ChevronRight,
+  ClipboardCheck, Cog, Copy, Gauge, Mail, MapPin,
+  Menu, MessageCircle, Wrench, X, Phone, Facebook, Star, Clock
 } from 'lucide-react';
 import './styles.css';
 
 const contact = {
-  whatsapp: (import.meta.env.VITE_WHATSAPP_NUMBER || '').replace(/\D/g, ''),
+  whatsapp: (import.meta.env.VITE_WHATSAPP_NUMBER || '595984225745').replace(/\D/g, ''),
+  phone: '+595 984 225745',
   email: (import.meta.env.VITE_CONTACT_EMAIL || '').trim(),
-  address: (import.meta.env.VITE_ADDRESS_TEXT || '').trim(),
-  mapUrl: (import.meta.env.VITE_GOOGLE_MAPS_URL || '').trim()
+  address: (import.meta.env.VITE_ADDRESS_TEXT || 'Calle Estrella, zona Blas Garay, Ciudad del Este, Paraguay').trim(),
+  mapUrl: (import.meta.env.VITE_GOOGLE_MAPS_URL || 'https://www.google.com/maps/search/?api=1&query=Rectificadora%20de%20motores%202R&query_place_id=ChIJtX38HK6F9pQRcd5ZZhw4uOY').trim(),
+  facebook: 'https://www.facebook.com/share/1E6ahNBk5X/',
+  reviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJtX38HK6F9pQRcd5ZZhw4uOY',
+  hours: [{ days: 'Lunes a viernes', time: '08:00 a 17:00' }, { days: 'Sábado', time: '08:00 a 12:00' }]
 };
 
 const nav = [
@@ -110,16 +114,16 @@ function Hero() {
       <div className="hero-grid" aria-hidden="true"></div>
       <div className="hero-container site-container">
         <div className="hero-content">
-          <div className="hero-eyebrow"><span className="pulse-square"></span> 2R / RECTIFICADORA DE MOTORES</div>
+          <div className="hero-eyebrow"><span className="pulse-square"></span> RECTIFICADORA 2R / CIUDAD DEL ESTE</div>
           <h1><span>PRECISIÓN</span><span className="outline-word">QUE MUEVE</span><span className="highlight-word">MOTORES<span className="hero-punctuation">.</span></span></h1>
-          <p className="hero-subtitle">Cada componente importa. Cada detalle cuenta. Una propuesta enfocada en la rectificación de motores.</p>
+          <p className="hero-subtitle">Rectificación de motores en Ciudad del Este. Cada componente importa. Cada detalle cuenta.</p>
           <div className="hero-actions">
             <a href="#contacto" className="button button-yellow">SOLICITAR PRESUPUESTO <ArrowUpRight size={19}/></a>
             <a href="#servicios" className="text-link">CONOCÉ NUESTRO TRABAJO <ArrowRight size={18}/></a>
           </div>
         </div>
         <div className="hero-bottom">
-          <div className="hero-bottom-left"><span className="line-icon"></span><span>MECÁNICA / RECTIFICACIÓN / 2R</span></div>
+          <div className="hero-bottom-left"><span className="line-icon"></span><span>CIUDAD DEL ESTE / PARAGUAY / 2R</span></div>
           <a className="scroll-link" href="#servicios">EXPLORAR <ArrowDownRight size={22}/></a>
         </div>
       </div>
@@ -216,6 +220,21 @@ function Brands() {
   );
 }
 
+function Reviews() {
+  return (
+    <section className="review-section" aria-label="Reseñas en Google">
+      <div className="site-container review-inner reveal">
+        <div>
+          <SectionLabel inverse>RESEÑAS / GOOGLE</SectionLabel>
+          <h2>TU OPINIÓN<br/><em>NOS IMPULSA.</em></h2>
+          <p>¿Ya conocés el trabajo de la 2R? Compartí tu experiencia en nuestro perfil de Google.</p>
+        </div>
+        <a className="review-button" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">ESCRIBIR UNA RESEÑA <ArrowUpRight size={22}/></a>
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   const [form, setForm] = useState({ name: '', motor: '', detail: '' });
   const [status, setStatus] = useState('');
@@ -254,9 +273,19 @@ function Contact() {
           <h2>HABLEMOS<br/>DE TU<br/><span>MOTOR.</span></h2>
           <p>Contanos qué motor tenés y qué trabajo necesitás. Prepará tu consulta en unos pasos.</p>
           <div className="contact-lines">
-            {contact.whatsapp && <a href={'https://wa.me/' + contact.whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={20}/> WHATSAPP <ArrowUpRight size={18}/></a>}
-            {contact.email && <a href={'mailto:' + contact.email}><Mail size={20}/> {contact.email} <ArrowUpRight size={18}/></a>}
-            {contact.address && <div><MapPin size={20}/><span>{contact.address}</span>{contact.mapUrl && <a href={contact.mapUrl} target="_blank" rel="noreferrer" aria-label="Ver ubicación en Maps"><ArrowUpRight size={18}/></a>}</div>}
+            <a href={'tel:+' + contact.whatsapp} aria-label={'Llamar al ' + contact.phone}><Phone size={20}/><span>{contact.phone}</span><ArrowUpRight size={18}/></a>
+            <a href={'https://wa.me/' + contact.whatsapp} target="_blank" rel="noopener noreferrer"><MessageCircle size={20}/><span>ESCRIBIR POR WHATSAPP</span><ArrowUpRight size={18}/></a>
+            <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><MapPin size={20}/><span>{contact.address}</span><ArrowUpRight size={18}/></a>
+            <a href={contact.facebook} target="_blank" rel="noopener noreferrer"><Facebook size={20}/><span>VISITAR FACEBOOK</span><ArrowUpRight size={18}/></a>
+            <a href={contact.reviewUrl} target="_blank" rel="noopener noreferrer"><Star size={20}/><span>DEJAR UNA RESEÑA EN GOOGLE</span><ArrowUpRight size={18}/></a>
+            {contact.email && <a href={'mailto:' + contact.email}><Mail size={20}/><span>{contact.email}</span><ArrowUpRight size={18}/></a>}
+          </div>
+          <div className="business-hours">
+            <Clock size={19} aria-hidden="true"/>
+            <div><strong>HORARIOS PUBLICADOS EN GOOGLE</strong>
+              {contact.hours.map(({days,time}) => <span key={days}>{days}: {time}</span>)}
+              <small>Domingo: sin horario publicado. Confirmá antes de visitar.</small>
+            </div>
           </div>
         </div>
         <div className="form-panel reveal">
@@ -285,7 +314,7 @@ function Footer() {
     <footer className="footer">
       <div className="site-container footer-main">
         <div><Brand compact /><p>PRECISIÓN QUE MUEVE MOTORES.</p></div>
-        <div className="footer-links"><a href="#inicio">INICIO</a><a href="#servicios">SERVICIOS</a><a href="#nosotros">NOSOTROS</a><a href="#marcas">MARCAS</a><a href="#contacto">CONTACTO</a></div>
+        <div className="footer-links"><a href="#inicio">INICIO</a><a href="#servicios">SERVICIOS</a><a href="#nosotros">NOSOTROS</a><a href="#marcas">MARCAS</a><a href="#contacto">CONTACTO</a><a href={contact.facebook} target="_blank" rel="noopener noreferrer">FACEBOOK</a><a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">UBICACIÓN</a></div>
         <a className="back-top" href="#inicio" aria-label="Volver arriba"><ArrowUpRight size={27}/></a>
       </div>
       <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} RECTIFICADORA DE MOTORES 2R</span><span>DISEÑADO PARA MOVERSE HACIA ADELANTE <ArrowUpRight size={13}/></span></div>
@@ -321,6 +350,7 @@ function App() {
         <Services />
         <About />
         <Brands />
+        <Reviews />
         <Contact />
       </main>
       <Footer />
