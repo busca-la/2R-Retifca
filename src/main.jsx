@@ -6,6 +6,10 @@ import {
   Menu, MessageCircle, Wrench, X, Phone, Facebook, Star, Clock
 } from 'lucide-react';
 import './styles.css';
+import WorkGallery from './WorkGallery';
+
+// Prefer authentic 2R customer photographs once files are added to src/assets/2r.
+const realPhotos = import.meta.glob('./assets/2r/*.webp', { eager: true, query: '?url', import: 'default' });
 
 const contact = {
   whatsapp: (import.meta.env.VITE_WHATSAPP_NUMBER || '595984225745').replace(/\D/g, ''),
@@ -21,6 +25,7 @@ const contact = {
 const nav = [
   { label: 'Inicio', href: '#inicio' },
   { label: 'Servicios', href: '#servicios' },
+  { label: 'Trabajos', href: '#trabajos' },
   { label: 'Nosotros', href: '#nosotros' },
   { label: 'Marcas', href: '#marcas' }
 ];
@@ -100,7 +105,7 @@ function Hero() {
   return (
     <section id="inicio" className="hero">
       <div className="hero-visual" aria-hidden="true">
-        <img src="https://images.unsplash.com/photo-1777900201609-ad2f57813ab8?auto=format&fit=crop&w=1900&q=85" alt="" fetchPriority="high" />
+        {realPhotos['./assets/2r/bloque-cilindros-06.webp'] && <img src={realPhotos['./assets/2r/bloque-cilindros-06.webp']} alt="" fetchPriority="high" />}
       </div>
       <div className="hero-grid" aria-hidden="true"></div>
       <div className="hero-container site-container">
@@ -166,7 +171,11 @@ function About() {
   return (
     <section id="nosotros" className="about-section">
       <div className="about-photo reveal">
-        <img src="https://images.unsplash.com/photo-1763848843613-f8c2ca3a31a1?auto=format&fit=crop&w=1400&q=85" alt="Bloque de motor y herramientas; fotografía ilustrativa" loading="lazy" />
+        {realPhotos['./assets/2r/tapa-rectificada-03.webp'] ? (
+          <img src={realPhotos['./assets/2r/tapa-rectificada-03.webp']} alt="Tapa de motor trabajada en Rectificadora 2R" loading="lazy" />
+        ) : (
+          <div className="about-photo-fallback" aria-hidden="true"><img src="/logo-2r.svg" alt="" loading="lazy" /></div>
+        )}
         <div className="about-photo-shade"></div>
         <div className="photo-corner"><span>2R</span><span>— RECTIFICADORA</span></div>
         <span className="photo-caption">IMAGEN ILUSTRATIVA</span>
@@ -305,7 +314,7 @@ function Footer() {
     <footer className="footer">
       <div className="site-container footer-main">
         <div><Brand compact /><p>PRECISIÓN QUE MUEVE MOTORES.</p></div>
-        <div className="footer-links"><a href="#inicio">INICIO</a><a href="#servicios">SERVICIOS</a><a href="#nosotros">NOSOTROS</a><a href="#marcas">MARCAS</a><a href="#contacto">CONTACTO</a><a href={contact.facebook} target="_blank" rel="noopener noreferrer">FACEBOOK</a><a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">UBICACIÓN</a></div>
+        <div className="footer-links"><a href="#inicio">INICIO</a><a href="#servicios">SERVICIOS</a><a href="#trabajos">TRABAJOS</a><a href="#nosotros">NOSOTROS</a><a href="#marcas">MARCAS</a><a href="#contacto">CONTACTO</a><a href={contact.facebook} target="_blank" rel="noopener noreferrer">FACEBOOK</a><a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">UBICACIÓN</a></div>
         <a className="back-top" href="#inicio" aria-label="Volver arriba"><ArrowUpRight size={27}/></a>
       </div>
       <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} RECTIFICADORA DE MOTORES 2R</span><span>DISEÑADO PARA MOVERSE HACIA ADELANTE <ArrowUpRight size={13}/></span></div>
@@ -339,6 +348,7 @@ function App() {
         <Hero />
         <Marquee />
         <Services />
+        <WorkGallery />
         <About />
         <Brands />
         <Reviews />
