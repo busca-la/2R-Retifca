@@ -35,4 +35,4 @@ Los textos de servicios describen categorías generales de rectificación; deben
 
 ## Identidad
 
-El isotipo vectorial del sitio es una interpretación provisional inspirada en los colores del material compartido. Reemplazar por el logotipo original en SVG/PNG transparente cuando esté disponible.
+La marca en `public/logo-2r.svg` se trazó a partir del emblema negro y amarillo seleccionado por la empresa, para su uso ligero y nítido en el encabezado, pie de página y favicon. Es una vectorización monocromática del diseño compartido, no una copia pixel a pixel del archivo original.
