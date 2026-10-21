@@ -1,364 +1,192 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import {
-  ArrowDownRight, ArrowRight, ArrowUpRight, ChevronRight,
-  ClipboardCheck, Cog, Copy, Gauge, Mail, MapPin,
-  Menu, MessageCircle, Wrench, X, Phone, Facebook, Star, Clock
-} from 'lucide-react';
-import './styles.css';
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Clock, Facebook, Mail, MapPin, Menu, MessageCircle, Phone, Star, X } from 'lucide-react';
+import { contact, inquiryMessage, navigation, whatsappUrl } from './siteData';
+import { aboutPhoto, heroPhoto, servicePhoto } from './media';
 import WorkGallery from './WorkGallery';
-
-// Prefer authentic 2R customer photographs once files are added to src/assets/2r.
-const realPhotos = import.meta.glob('./assets/2r/*.webp', { eager: true, query: '?url', import: 'default' });
-const hasWorkMedia = Object.keys(realPhotos).length > 0 || Object.keys(import.meta.glob('./assets/2r/*.mp4')).length > 0;
-
-const contact = {
-  whatsapp: (import.meta.env.VITE_WHATSAPP_NUMBER || '595984225745').replace(/\D/g, ''),
-  phone: '+595 984 225745',
-  email: (import.meta.env.VITE_CONTACT_EMAIL || '').trim(),
-  address: (import.meta.env.VITE_ADDRESS_TEXT || 'Calle Estrella, zona Blas Garay, Ciudad del Este, Paraguay').trim(),
-  mapUrl: (import.meta.env.VITE_GOOGLE_MAPS_URL || 'https://www.google.com/maps/search/?api=1&query=Rectificadora%20de%20motores%202R&query_place_id=ChIJtX38HK6F9pQRcd5ZZhw4uOY').trim(),
-  facebook: 'https://www.facebook.com/share/1E6ahNBk5X/',
-  reviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJtX38HK6F9pQRcd5ZZhw4uOY',
-  hours: [{ days: 'Lunes a viernes', time: '08:00 a 17:00' }, { days: 'Sábado', time: '08:00 a 12:00' }]
-};
-
-const nav = [
-  { label: 'Inicio', href: '#inicio' },
-  { label: 'Servicios', href: '#servicios' },
-  { label: 'Trabajos', href: '#trabajos' },
-  { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Marcas', href: '#marcas' }
-];
-
-const services = [
-  {
-    number: '01',
-    title: 'Rectificación de motores',
-    text: 'Trabajos de rectificación enfocados en componentes del motor y sus necesidades mecánicas.',
-    icon: Cog
-  },
-  {
-    number: '02',
-    title: 'Componentes mecánicos',
-    text: 'Cada pieza tiene una función. Consultanos sobre el componente y el trabajo que necesitás.',
-    icon: Wrench
-  },
-  {
-    number: '03',
-    title: 'Consultas técnicas',
-    text: 'Contanos qué motor tenés y qué necesitás resolver para orientar tu consulta.',
-    icon: Gauge
-  }
-];
+import './styles.css';
 
 function LogoMark({ compact = false }) {
-  return (
-    <span className={'logo-mark' + (compact ? ' logo-mark-small' : '')} aria-hidden="true">
-      <img src="/logo-2r.svg" alt="" width="740" height="545" decoding="async" />
-    </span>
-  );
+  return <span className={'logo-mark' + (compact ? ' logo-mark-small' : '')} aria-hidden="true"><img src="/logo-2r.svg" alt="" width="740" height="545" decoding="async" /></span>;
 }
-
 function Brand({ compact = false }) {
-  return (
-    <a className={'brand' + (compact ? ' brand-footer' : '')} href="#inicio" aria-label="Rectificadora de Motores 2R — inicio">
-      <LogoMark compact={compact} />
-    </a>
-  );
+  return <a className={'brand' + (compact ? ' brand-footer' : '')} href="#inicio" aria-label="Rectificadora de Motores 2R — inicio"><LogoMark compact={compact} /></a>;
 }
 
 function Header() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const toggle = useRef(null);
+  const header = useRef(null);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const mobile = window.matchMedia('(max-width: 900px)');
+    const onResize = () => { if (!mobile.matches) setOpen(false); };
+    mobile.addEventListener('change', onResize);
+    return () => mobile.removeEventListener('change', onResize);
   }, []);
   useEffect(() => {
-    document.body.classList.toggle('menu-is-open', open);
-    return () => document.body.classList.remove('menu-is-open');
+    if (!open) return;
+    const main = document.getElementById('contenido');
+    const footer = document.querySelector('footer');
+    document.body.classList.add('menu-is-open');
+    if (main) main.inert = true;
+    if (footer) footer.inert = true;
+    header.current?.querySelector('nav a')?.focus();
+    const onKey = (event) => {
+      if (event.key === 'Escape') { event.preventDefault(); setOpen(false); }
+      if (event.key !== 'Tab') return;
+      const items = [...header.current.querySelectorAll('a, button')].filter(el => el.getClientRects().length);
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.body.classList.remove('menu-is-open');
+      if (main) main.inert = false;
+      if (footer) footer.inert = false;
+      document.removeEventListener('keydown', onKey);
+      toggle.current?.focus({ preventScroll: true });
+    };
   }, [open]);
-  return (
-    <header className={'site-header' + (scrolled ? ' is-scrolled' : '')}>
-      <div className="header-inner site-container">
-        <Brand />
-        <nav className={'nav-links' + (open ? ' nav-open' : '')} aria-label="Navegación principal" id="main-navigation">
-          {nav.filter(item => item.href !== '#trabajos' || hasWorkMedia).map(item => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
-          <a className="mobile-nav-cta" href="#contacto" onClick={() => setOpen(false)}>Solicitar presupuesto <ArrowUpRight size={18} /></a>
-        </nav>
-        <a className="header-cta" href="#contacto">HABLEMOS <ArrowUpRight size={17} strokeWidth={2.3}/></a>
-        <button className="menu-toggle" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="main-navigation" aria-label={open ? 'Cerrar menú' : 'Abrir menú'}>
-          {open ? <X size={25}/> : <Menu size={25}/>}
-        </button>
-      </div>
-    </header>
-  );
-}
-
-function SectionLabel({ children, inverse = false }) {
-  return <div className={'section-label' + (inverse ? ' inverse' : '')}><span className="label-dash"></span>{children}</div>;
-}
-
-function Hero() {
-  return (
-    <section id="inicio" className="hero">
-      <div className="hero-visual" aria-hidden="true">
-        {(realPhotos['./assets/2r/hero-bloque-2r.webp'] || realPhotos['./assets/2r/bloque-cilindros-06.webp']) && <img src={realPhotos['./assets/2r/hero-bloque-2r.webp'] || realPhotos['./assets/2r/bloque-cilindros-06.webp']} alt="" fetchPriority="high" />}
-      </div>
-      <div className="hero-grid" aria-hidden="true"></div>
-      <div className="hero-container site-container">
-        <div className="hero-content">
-          <div className="hero-eyebrow"><span className="pulse-square"></span> RECTIFICADORA 2R / CIUDAD DEL ESTE</div>
-          <h1><span>PRECISIÓN</span><span className="outline-word">QUE MUEVE</span><span className="highlight-word">MOTORES<span className="hero-punctuation">.</span></span></h1>
-          <p className="hero-subtitle">Rectificación de motores en Ciudad del Este. Cada componente importa. Cada detalle cuenta.</p>
-          <div className="hero-actions">
-            <a href="#contacto" className="button button-yellow">SOLICITAR PRESUPUESTO <ArrowUpRight size={19}/></a>
-            <a href="#servicios" className="text-link">CONOCÉ NUESTRO TRABAJO <ArrowRight size={18}/></a>
-          </div>
-        </div>
-        <div className="hero-bottom">
-          <div className="hero-bottom-left"><span className="line-icon"></span><span>CIUDAD DEL ESTE / PARAGUAY / 2R</span></div>
-          <a className="scroll-link" href="#servicios">EXPLORAR <ArrowDownRight size={22}/></a>
-        </div>
-      </div>
-      <span className="hero-vertical" aria-hidden="true">MECÁNICA CON PROPÓSITO — 2R</span>
-      <span className="hero-index" aria-hidden="true">001 — 004</span>
-    </section>
-  );
-}
-
-function Marquee() {
-  return (
-    <div className="keyword-strip" aria-hidden="true">
-      <div className="keyword-track">
-        {Array.from({length: 4}, (_, i) => <span key={i}>RECTIFICACIÓN <b>✳</b> MOTORES <b>✳</b> PRECISIÓN <b>✳</b></span>)}
-      </div>
+  return <header className="site-header" ref={header}>
+    <div className="header-inner site-container">
+      <Brand />
+      <nav className={'nav-links' + (open ? ' nav-open' : '')} aria-label="Navegación principal" id="main-navigation">
+        {navigation.map(item => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
+        <a className="mobile-nav-cta" href={whatsappUrl()}>SOLICITAR PRESUPUESTO <ArrowUpRight size={18} aria-hidden="true" /></a>
+      </nav>
+      <a className="header-cta" href={whatsappUrl()}><MessageCircle size={17} aria-hidden="true" /> WHATSAPP <ArrowUpRight size={16} aria-hidden="true" /></a>
+      <button className="menu-toggle" type="button" ref={toggle} onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="main-navigation" aria-label={open ? 'Cerrar menú' : 'Abrir menú'}>
+        {open ? <X size={25} aria-hidden="true" /> : <Menu size={25} aria-hidden="true" />}
+      </button>
     </div>
-  );
+  </header>;
 }
 
+function SectionLabel({ children }) {
+  return <p className="section-label"><span className="label-dash" aria-hidden="true" />{children}</p>;
+}
+function Hero() {
+  return <section id="inicio" className="hero" aria-labelledby="hero-title">
+    <div className="hero-container site-container">
+      <div className="hero-main">
+        <div className="hero-content">
+          <p className="hero-eyebrow"><span aria-hidden="true" /> RECTIFICADORA 2R · CIUDAD DEL ESTE</p>
+          <h1 id="hero-title"><span>PRECISIÓN</span><span className="outline-word">QUE MUEVE</span><span className="highlight-word">MOTORES.</span></h1>
+          <p className="hero-subtitle">Rectificación de motores y sus componentes en Ciudad del Este, Paraguay.</p>
+          <div className="hero-actions">
+            <a href={whatsappUrl()} className="button button-yellow">SOLICITAR PRESUPUESTO <ArrowUpRight size={19} aria-hidden="true" /></a>
+            <a href="#trabajos" className="text-link">VER NUESTROS TRABAJOS <ArrowRight size={18} aria-hidden="true" /></a>
+          </div>
+          <p className="hero-contact-note">Consultanos directamente por WhatsApp.</p>
+        </div>
+        <figure className="hero-photo">
+          <img src={heroPhoto.url} srcSet={heroPhoto.small + ' 640w, ' + heroPhoto.url + ' 1250w'} sizes="(max-width: 900px) calc(100vw - 40px), 48vw" alt="Bloque de cuatro cilindros en el taller de Rectificadora 2R" width={heroPhoto.width} height={heroPhoto.height} fetchPriority="high" decoding="async" />
+          <figcaption><span>BLOQUE DE MOTOR</span><span>EN EL TALLER / 2R</span></figcaption>
+        </figure>
+      </div>
+      <div className="hero-bottom"><span>PIEZAS. MEDIDAS. DETALLES.</span><a href="#servicios">CONOCÉ 2R <ArrowDownRight size={18} aria-hidden="true" /></a></div>
+    </div>
+  </section>;
+}
 function Services() {
-  return (
-    <section className="services-section" id="servicios">
-      <div className="site-container">
-        <div className="services-head reveal">
-          <div>
-            <SectionLabel>01 / QUÉ HACEMOS</SectionLabel>
-            <h2>EL DETALLE<br/>HACE LA <em>DIFERENCIA.</em></h2>
-          </div>
-          <p>Un motor es mucho más que la suma de sus piezas. En 2R, la rectificación está en el centro de nuestro trabajo.</p>
+  return <section className="services-section section-space" id="servicios" aria-labelledby="services-title">
+    <div className="site-container">
+      <div className="services-head reveal"><SectionLabel>01 / QUÉ HACEMOS</SectionLabel><h2 id="services-title">Rectificación de motores.<br /><em>Hablemos de tu caso.</em></h2></div>
+      <article className="service-overview reveal">
+        <div className="service-copy">
+          <p className="section-intro">Cada consulta empieza con información concreta: qué motor tenés, qué componente necesita trabajo y qué necesitás resolver.</p>
+          <h3>Para solicitar tu presupuesto</h3>
+          <ol className="consultation-checklist">
+            <li><span>01</span><div><strong>Marca y modelo</strong><p>Indicá el motor o vehículo al que pertenece la pieza.</p></div></li>
+            <li><span>02</span><div><strong>Pieza o componente</strong><p>Contanos sobre qué parte necesitás consultar.</p></div></li>
+            <li><span>03</span><div><strong>Detalle del trabajo</strong><p>Describí lo que necesitás. También podés enviar fotos por WhatsApp.</p></div></li>
+          </ol>
         </div>
-        <div className="service-grid">
-          {services.map((service) => {
-            const Icon = service.icon;
-            return <article className="service-card reveal" key={service.number}>
-              <div className="service-card-top"><span>{service.number} / SERVICIO</span><ArrowUpRight size={22}/></div>
-              <div className="service-icon"><Icon size={42} strokeWidth={1.25}/></div>
-              <div className="service-card-content"><h3>{service.title}</h3><p>{service.text}</p></div>
-              <a href="#contacto" className="service-card-link" aria-label={'Consultar por ' + service.title}><span>CONSULTAR</span> <ChevronRight size={18}/></a>
-            </article>;
-          })}
-        </div>
-        <div className="services-note reveal"><span>NO TODOS LOS MOTORES SON IGUALES.</span><span>CONSULTÁ POR TU CASO EN PARTICULAR <ArrowUpRight size={17}/></span></div>
-      </div>
-    </section>
-  );
+        <figure className="service-photo"><img src={servicePhoto.url} alt="Cámaras y válvulas de una tapa de motor fotografiada en 2R" width={servicePhoto.width} height={servicePhoto.height} loading="lazy" decoding="async" /><figcaption>COMPONENTES DEL MOTOR / 2R</figcaption></figure>
+      </article>
+      <div className="service-cta reveal"><p>¿Qué necesita tu motor?<span>Consultá el alcance del trabajo y la disponibilidad.</span></p><a className="button button-outline" href={whatsappUrl('Hola, 2R. Quisiera consultar sobre un trabajo de rectificación. Mi motor / modelo es: ')}>CONSULTAR POR WHATSAPP <ArrowUpRight size={18} aria-hidden="true" /></a></div>
+    </div>
+  </section>;
 }
-
 function About() {
-  return (
-    <section id="nosotros" className="about-section">
-      <div className="about-photo reveal">
-        {realPhotos['./assets/2r/tapa-rectificada-03.webp'] ? (
-          <img src={realPhotos['./assets/2r/tapa-rectificada-03.webp']} alt="Tapa de motor trabajada en Rectificadora 2R" loading="lazy" />
-        ) : (
-          <div className="about-photo-fallback" aria-hidden="true"><img src="/logo-2r.svg" alt="" loading="lazy" /></div>
-        )}
-        <div className="about-photo-shade"></div>
-        <div className="photo-corner"><span>2R</span><span>— RECTIFICADORA</span></div>
-        <span className="photo-caption">{realPhotos['./assets/2r/tapa-rectificada-03.webp'] ? 'TRABAJO DE 2R' : 'IDENTIDAD VISUAL 2R'}</span>
-      </div>
-      <div className="about-copy">
-        <div className="about-copy-inner reveal">
-          <SectionLabel inverse>02 / SOBRE 2R</SectionLabel>
-          <h2>HABLAMOS<br/>EL IDIOMA<br/><em>DEL MOTOR.</em></h2>
-          <div className="about-line"></div>
-          <p>Somos <strong>Rectificadora de Motores 2R.</strong> Nuestro nombre representa el área en la que trabajamos: la rectificación de motores y sus componentes.</p>
-          <p>Porque detrás de cada motor hay piezas, medidas y detalles que importan.</p>
-          <a className="about-link" href="#contacto">HACENOS TU CONSULTA <ArrowUpRight size={21}/></a>
-        </div>
-        <span className="about-watermark" aria-hidden="true">2R</span>
-      </div>
-    </section>
-  );
+  return <section id="nosotros" className="about-section section-space" aria-labelledby="about-title">
+    <div className="site-container about-layout">
+      <figure className="about-photo reveal"><img src={aboutPhoto.url} alt="Tapa de motor sobre la maquinaria del taller de 2R" width={aboutPhoto.width} height={aboutPhoto.height} loading="lazy" decoding="async" /><figcaption>UNA MIRADA AL TRABAJO DE 2R.</figcaption></figure>
+      <div className="about-copy reveal"><SectionLabel>03 / SOBRE 2R</SectionLabel><h2 id="about-title">El motor, desde<br /><em>cada una de sus piezas.</em></h2><p>Somos Rectificadora de Motores 2R, en Ciudad del Este. Trabajamos en la rectificación de motores y sus componentes.</p><p>En esta página podés ver piezas y procesos del taller. Para conocer el alcance de un trabajo, compartí con nosotros los datos de tu motor y tu consulta.</p><a className="text-link" href={whatsappUrl('Hola, 2R. Me gustaría consultar por mi motor. ')}>HABLEMOS DE TU MOTOR <ArrowUpRight size={18} aria-hidden="true" /></a></div>
+    </div>
+  </section>;
 }
-
-function Brands() {
-  const brands = ['SCANIA', 'VOLVO', 'MERCEDES-BENZ', 'CAT'];
-  return (
-    <section className="brands-section" id="marcas">
-      <div className="site-container">
-        <div className="brands-heading reveal">
-          <SectionLabel inverse>03 / MOTORES Y MARCAS</SectionLabel>
-          <div className="brands-heading-row">
-            <h2>GRANDES<br/><em>NOMBRES.</em></h2>
-            <p>Estas marcas aparecen en la presentación de 2R. Consultá por la atención disponible para tu motor y modelo.</p>
-          </div>
-        </div>
-        <div className="brands-list">
-          {brands.map((brand, i) => <a className="brand-row reveal" key={brand} href="#contacto">
-            <span className="brand-row-number">0{i+1}</span>
-            <span className="brand-row-name">{brand}</span>
-            <ArrowUpRight size={29} strokeWidth={1.4}/>
-          </a>)}
-        </div>
-        <p className="brands-disclaimer">Las marcas mencionadas pertenecen a sus respectivos titulares. Su mención no implica representación ni vínculo oficial.</p>
+function LocationAndTrust() {
+  return <section className="location-section section-space" id="ubicacion" aria-labelledby="location-title">
+    <div className="site-container">
+      <div className="location-heading reveal"><SectionLabel>04 / ENCONTRANOS</SectionLabel><h2 id="location-title">Estamos en<br /><em>Ciudad del Este.</em></h2><p>Ubicación, contacto y experiencias de clientes en nuestros canales oficiales.</p></div>
+      <div className="location-grid reveal">
+        <article className="location-card"><MapPin size={25} aria-hidden="true" /><h3>Vení al taller</h3><p>{contact.address}, Paraguay.</p><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">ABRIR GOOGLE MAPS <ArrowUpRight size={17} aria-hidden="true" /></a></article>
+        <article className="location-card"><Star size={25} aria-hidden="true" /><h3>Experiencias en Google</h3><p>Conocé nuestro perfil. Si ya trabajaste con 2R, también podés compartir tu experiencia.</p><div className="location-actions"><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER PERFIL <ArrowUpRight size={17} aria-hidden="true" /></a><a className="subtle-link" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">Escribir una reseña <ArrowUpRight size={16} aria-hidden="true" /></a></div></article>
       </div>
-    </section>
-  );
+      <p className="hours-note"><Clock size={17} aria-hidden="true" /> Antes de venir, <a href={whatsappUrl('Hola, 2R. ¿Podrían confirmarme el horario de atención de hoy?')}>confirmá el horario de atención por WhatsApp <ArrowUpRight size={15} aria-hidden="true" /></a>.</p>
+    </div>
+  </section>;
 }
-
-function Reviews() {
-  return (
-    <section className="review-section" aria-label="Reseñas en Google">
-      <div className="site-container review-inner reveal">
-        <div>
-          <SectionLabel inverse>RESEÑAS / GOOGLE</SectionLabel>
-          <h2>TU OPINIÓN<br/><em>NOS IMPULSA.</em></h2>
-          <p>¿Ya conocés el trabajo de la 2R? Compartí tu experiencia en nuestro perfil de Google.</p>
-        </div>
-        <a className="review-button" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">ESCRIBIR UNA RESEÑA <ArrowUpRight size={22}/></a>
-      </div>
-    </section>
-  );
-}
-
 function Contact() {
   const [form, setForm] = useState({ name: '', motor: '', detail: '' });
-  const [status, setStatus] = useState('');
-  const [draft, setDraft] = useState('');
-  const setField = (field, value) => {
-    setForm(current => ({ ...current, [field]: value }));
-    setStatus('');
-  };
-  async function submit(e) {
-    e.preventDefault();
-    const message = ['Hola, Rectificadora 2R. Quisiera hacer una consulta.',
-      'Nombre: ' + form.name.trim(),
-      'Motor / modelo: ' + (form.motor.trim() || 'Sin especificar'),
-      'Consulta: ' + form.detail.trim()].join('\n');
-    setDraft(message);
-    if (contact.whatsapp) {
-      const whatsappUrl = 'https://wa.me/' + contact.whatsapp + '?text=' + encodeURIComponent(message);
-      // Same-tab navigation avoids popup blockers on Safari and mobile browsers.
-      window.location.assign(whatsappUrl);
-    } else if (contact.email) {
-      window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent('Consulta de motor - 2R') + '&body=' + encodeURIComponent(message);
-      setStatus('Se abrió tu aplicación de correo. Confirmá el envío para completar la consulta.');
-    } else {
-      try {
-        await navigator.clipboard.writeText(message);
-        setStatus('¡Consulta copiada! Ya podés pegar el texto en el canal de contacto de 2R.');
-      } catch (error) {
-        setStatus('Tu consulta está lista. Seleccioná y copiá el mensaje que aparece debajo.');
-      }
-    }
+  const [errors, setErrors] = useState({});
+  const setField = (field, value) => { setForm(current => ({ ...current, [field]: value })); setErrors(current => ({ ...current, [field]: '' })); };
+  function submit(event) {
+    event.preventDefault();
+    const nextErrors = {};
+    if (!form.name.trim()) nextErrors.name = 'Escribí tu nombre.';
+    if (!form.detail.trim()) nextErrors.detail = 'Contanos brevemente qué necesitás.';
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) { document.getElementById(nextErrors.name ? 'full-name' : 'consultation')?.focus(); return; }
+    // The customer confirms the send inside WhatsApp. No site-side message send.
+    window.location.assign(whatsappUrl(inquiryMessage(form)));
   }
-  return (
-    <section className="contact-section" id="contacto">
-      <div className="site-container contact-layout">
-        <div className="contact-intro reveal">
-          <SectionLabel>04 / CONTACTO</SectionLabel>
-          <h2>HABLEMOS<br/>DE TU<br/><span>MOTOR.</span></h2>
-          <p>Contanos qué motor tenés y qué trabajo necesitás. Prepará tu consulta en unos pasos.</p>
-          <div className="contact-lines">
-            <a href={'tel:+' + contact.whatsapp} aria-label={'Llamar al ' + contact.phone}><Phone size={20}/><span>{contact.phone}</span><ArrowUpRight size={18}/></a>
-            <a href={'https://wa.me/' + contact.whatsapp} target="_blank" rel="noopener noreferrer"><MessageCircle size={20}/><span>ESCRIBIR POR WHATSAPP</span><ArrowUpRight size={18}/></a>
-            <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><MapPin size={20}/><span>{contact.address}</span><ArrowUpRight size={18}/></a>
-            <a href={contact.facebook} target="_blank" rel="noopener noreferrer"><Facebook size={20}/><span>VISITAR FACEBOOK</span><ArrowUpRight size={18}/></a>
-            <a href={contact.reviewUrl} target="_blank" rel="noopener noreferrer"><Star size={20}/><span>DEJAR UNA RESEÑA EN GOOGLE</span><ArrowUpRight size={18}/></a>
-            {contact.email && <a href={'mailto:' + contact.email}><Mail size={20}/><span>{contact.email}</span><ArrowUpRight size={18}/></a>}
-          </div>
-          <div className="business-hours">
-            <Clock size={19} aria-hidden="true"/>
-            <div><strong>HORARIOS PUBLICADOS EN GOOGLE</strong>
-              {contact.hours.map(({days,time}) => <span key={days}>{days}: {time}</span>)}
-              <small>Domingo: sin horario publicado. Confirmá antes de visitar.</small>
-            </div>
-          </div>
-        </div>
-        <div className="form-panel reveal">
-          <div className="form-heading"><span>CONSULTA / 2R</span><span>01—03</span></div>
-          <h3>CONTANOS<br/>QUÉ NECESITÁS.</h3>
-          <form onSubmit={submit} className="inquiry-form">
-            <label htmlFor="full-name">01. TU NOMBRE <span>*</span></label>
-            <input id="full-name" required autoComplete="name" maxLength={90} placeholder="Tu nombre" value={form.name} onChange={e => setField('name', e.target.value)}/>
-            <label htmlFor="motor-model">02. MOTOR / MODELO</label>
-            <input id="motor-model" maxLength={120} placeholder="Ej.: marca, modelo, tipo de motor" value={form.motor} onChange={e => setField('motor', e.target.value)}/>
-            <label htmlFor="consultation">03. ¿QUÉ NECESITÁS? <span>*</span></label>
-            <textarea id="consultation" required maxLength={1200} rows={3} placeholder="Describí brevemente tu consulta..." value={form.detail} onChange={e => setField('detail', e.target.value)}/>
-            <button className="submit-button" type="submit">{contact.whatsapp ? 'CONTINUAR EN WHATSAPP' : (contact.email ? 'PREPARAR CORREO' : 'COPIAR MI CONSULTA')} {contact.whatsapp ? <ArrowUpRight size={20}/> : <Copy size={20}/>}</button>
-            <p className="form-helper">{contact.whatsapp ? 'Tu mensaje se abrirá en WhatsApp para que confirmes el envío.' : (contact.email ? 'Se abrirá tu correo; el envío se confirma desde tu aplicación.' : 'El mensaje se copiará. No se envían datos desde este formulario.')}</p>
-            {status && <div className="form-status" role="status"><ClipboardCheck size={18}/><span>{status}</span></div>}
-            {draft && !contact.whatsapp && !contact.email && <textarea className="draft-output" aria-label="Texto de la consulta" value={draft} readOnly rows={5}/>}
-          </form>
+  return <section className="contact-section section-space" id="contacto" aria-labelledby="contact-title">
+    <div className="site-container contact-layout">
+      <div className="contact-intro reveal">
+        <SectionLabel>05 / CONTACTO</SectionLabel><h2 id="contact-title">Tu próxima consulta<br /><em>empieza acá.</em></h2><p>Hablá directamente con 2R o prepará tu consulta en el formulario.</p>
+        <a className="button button-yellow" href={whatsappUrl()}>ESCRIBIR POR WHATSAPP <ArrowUpRight size={18} aria-hidden="true" /></a>
+        <div className="contact-lines">
+          <a href={'tel:+' + contact.whatsapp}><Phone size={19} aria-hidden="true" /><span>{contact.phone}</span><ArrowUpRight size={17} aria-hidden="true" /></a>
+          <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><MapPin size={19} aria-hidden="true" /><span>{contact.address}</span><ArrowUpRight size={17} aria-hidden="true" /></a>
+          <a href={contact.facebook} target="_blank" rel="noopener noreferrer"><Facebook size={19} aria-hidden="true" /><span>2R en Facebook</span><ArrowUpRight size={17} aria-hidden="true" /></a>
+          {contact.email && <a href={'mailto:' + contact.email}><Mail size={19} aria-hidden="true" /><span>{contact.email}</span><ArrowUpRight size={17} aria-hidden="true" /></a>}
         </div>
       </div>
-    </section>
-  );
+      <div className="form-panel reveal">
+        <p className="form-eyebrow">CONSULTA / 2R</p><h3>Contanos qué necesitás.</h3>
+        <form onSubmit={submit} className="inquiry-form" noValidate>
+          <label htmlFor="full-name">Tu nombre <span>(obligatorio)</span></label>
+          <input id="full-name" name="name" required autoComplete="name" maxLength={90} placeholder="¿Cómo te llamás?" value={form.name} onChange={e => setField('name', e.target.value)} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'name-error' : undefined} />
+          {errors.name && <p className="field-error" id="name-error" role="alert">{errors.name}</p>}
+          <label htmlFor="motor-model">Motor / modelo <span>(opcional)</span></label>
+          <input id="motor-model" name="motor" maxLength={120} placeholder="Marca, modelo o tipo de motor" value={form.motor} onChange={e => setField('motor', e.target.value)} />
+          <label htmlFor="consultation">¿Qué necesitás? <span>(obligatorio)</span></label>
+          <textarea id="consultation" name="detail" required maxLength={1200} rows={4} placeholder="Describí brevemente tu consulta…" value={form.detail} onChange={e => setField('detail', e.target.value)} aria-invalid={Boolean(errors.detail)} aria-describedby={errors.detail ? 'detail-error' : undefined} />
+          {errors.detail && <p className="field-error" id="detail-error" role="alert">{errors.detail}</p>}
+          <button className="submit-button" type="submit">CONTINUAR EN WHATSAPP <ArrowUpRight size={19} aria-hidden="true" /></button>
+          <p className="form-helper">Se abrirá WhatsApp con tu consulta preparada. Vos confirmás el envío.</p>
+        </form>
+      </div>
+    </div>
+  </section>;
 }
-
 function Footer() {
-  return (
-    <footer className="footer">
-      <div className="site-container footer-main">
-        <div><Brand compact /><p>PRECISIÓN QUE MUEVE MOTORES.</p></div>
-        <div className="footer-links"><a href="#inicio">INICIO</a><a href="#servicios">SERVICIOS</a>{hasWorkMedia && <a href="#trabajos">TRABAJOS</a>}<a href="#nosotros">NOSOTROS</a><a href="#marcas">MARCAS</a><a href="#contacto">CONTACTO</a><a href={contact.facebook} target="_blank" rel="noopener noreferrer">FACEBOOK</a><a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">UBICACIÓN</a></div>
-        <a className="back-top" href="#inicio" aria-label="Volver arriba"><ArrowUpRight size={27}/></a>
-      </div>
-      <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} RECTIFICADORA DE MOTORES 2R</span><span>DISEÑADO PARA MOVERSE HACIA ADELANTE <ArrowUpRight size={13}/></span></div>
-    </footer>
-  );
+  return <footer className="footer">
+    <div className="site-container footer-main"><div><Brand compact /><p>RECTIFICADORA DE MOTORES<br />CIUDAD DEL ESTE, PARAGUAY.</p></div><nav className="footer-links" aria-label="Navegación del pie">{navigation.map(item => <a href={item.href} key={item.href}>{item.label}</a>)}<a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">Ubicación <ArrowUpRight size={14} aria-hidden="true" /></a></nav><a className="back-top" href="#inicio" aria-label="Volver arriba"><ArrowUpRight size={23} aria-hidden="true" /></a></div>
+    <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} RECTIFICADORA DE MOTORES 2R</span><span>PRECISIÓN QUE MUEVE MOTORES.</span></div>
+  </footer>;
 }
-
 function App() {
   useEffect(() => {
     const targets = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) {
-      targets.forEach(t => t.classList.add('visible'));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -36px 0px' });
-    targets.forEach(target => observer.observe(target));
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold: 0.06 });
+    targets.forEach(target => { target.classList.add('reveal-ready'); observer.observe(target); });
     return () => observer.disconnect();
   }, []);
-  return (
-    <>
-      <a className="skip-link" href="#contenido">Saltar al contenido</a>
-      <Header />
-      <main id="contenido">
-        <Hero />
-        <Marquee />
-        <Services />
-        <WorkGallery />
-        <About />
-        <Brands />
-        <Reviews />
-        <Contact />
-      </main>
-      <Footer />
-    </>
-  );
+  return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><About /><LocationAndTrust /><Contact /></main><Footer /></>;
 }
-
 createRoot(document.getElementById('root')).render(<App />);

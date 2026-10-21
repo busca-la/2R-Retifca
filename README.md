@@ -1,38 +1,36 @@
 # Rectificadora de Motores 2R
 
-Sitio institucional en español construido con React y Vite.
+Sitio institucional en español para Ciudad del Este, Paraguay. React + Vite, sobre el repositorio existente.
 
-## Ejecutar localmente
+## Ejecutar y validar
 
-```bash
-npm install
-npm run dev
-```
+Instalar con `npm ci`, ejecutar `npm run dev`, probar con `npm test` y compilar con `npm run build`. La salida de producción es `dist`.
 
-## Publicación
+## Canales oficiales
 
-```bash
-npm run build
-```
-
-Directorio de salida: `dist`.
-
-## Datos y enlaces comerciales
-
-- Empresa: Rectificadora de Motores 2R, Ciudad del Este, Paraguay.
-- WhatsApp / teléfono: +595 984 225745. El formulario abre `wa.me` con un texto prellenado; el cliente confirma el envío.
-- Google Maps: perfil identificado con el Place ID `ChIJtX38HK6F9pQRcd5ZZhw4uOY`.
-- Opiniones: https://search.google.com/local/writereview?placeid=ChIJtX38HK6F9pQRcd5ZZhw4uOY
+- WhatsApp / teléfono: +595 984 225745.
+- Google Maps: Place ID `ChIJtX38HK6F9pQRcd5ZZhw4uOY`.
+- Reseñas: https://search.google.com/local/writereview?placeid=ChIJtX38HK6F9pQRcd5ZZhw4uOY
 - Facebook: https://www.facebook.com/share/1E6ahNBk5X/
-- Ubicación publicada: zona Calle Estrella / Blas Garay, Ciudad del Este. La otra calle de referencia no está determinada.
-- Horario publicado por Google: lunes a viernes 08:00–17:00; sábado 08:00–12:00. El WhatsApp Business muestra 24 horas, por lo que **la empresa debe confirmar el horario correcto**.
+- Zona publicada: Calle Estrella / Blas Garay, Ciudad del Este.
+- El horario específico requiere confirmación con la empresa: la información previa de Google y WhatsApp Business no coincidía. El sitio invita a consultar antes de visitar.
 
-Opcionalmente, crear un archivo `.env` copiando `.env.example` para configurar el correo, WhatsApp y dirección. Los valores verificados ya están incorporados como respaldo en el código y los usuarios no necesitan configurar nada para poder contactar a la empresa.
+El formulario valida nombre y consulta, prepara el mensaje y abre WhatsApp en la misma pestaña. El cliente confirma el envío; no hay un envío automático ni almacenamiento en un servidor. Las fotos adicionales pueden adjuntarse después en WhatsApp.
 
-## Contenidos
+## Medios e identidad
 
-Los textos de servicios describen categorías generales de rectificación; deben ser confirmados con la empresa antes de la publicación definitiva. Las fotografías son ilustrativas y proceden de Unsplash; no representan necesariamente el taller 2R. Las marcas citadas pertenecen a sus titulares y no implican vínculo oficial.
+Siete fotografías originales, dos videos reales y sus capas. Se preservan los fondos de taller y las proporciones de las piezas. La imagen con fondo editado no se utiliza. La galería puede ampliarse y cerrarse con Escape.
 
-## Identidad
+El archivo `public/logo-2r.svg` se conserva sin cambios. Las fuentes Barlow Condensed y DM Sans se sirven localmente; se incluyen sus licencias OFL. La imagen social y el icono Apple se exportan desde el mismo logo y la fotografía original, sin reconstruir el símbolo.
 
-La marca en `public/logo-2r.svg` se trazó a partir del emblema negro y amarillo seleccionado por la empresa, para su uso ligero y nítido en el encabezado, pie de página y favicon. Es una vectorización monocromática del diseño compartido, no una copia pixel a pixel del archivo original.
+## Contenido comercial
+
+Se publica la categoría general confirmada de rectificación de motores. No se publican especializaciones, marcas atendidas, equipos, años de experiencia ni valoraciones numéricas sin confirmación.
+
+Consultar [dirección de arte](docs/DIRECCION-DE-ARTE-V2.md) y [medios](docs/MEDIOS-V2.md).
+
+## Configuración
+
+Se conservan las variables opcionales de `.env.example` para contacto. Los valores oficiales están incluidos como respaldo. Si se cambia el número, ubicación o dominio, actualizar también los datos estructurados de `index.html`, el sitemap y los metadatos sociales.
+
+El proyecto existente de Vercel publica desde la rama principal. La validación de GitHub usa el lockfile, ejecuta los tests y compila.
