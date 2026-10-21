@@ -17,6 +17,11 @@ export function whatsappUrl(message = 'Hola, 2R. Quisiera solicitar un presupues
 export function inquiryMessage({ name, motor, detail }) {
   return ['Hola, Rectificadora 2R. Quisiera hacer una consulta.', 'Nombre: ' + name.trim(), 'Motor / modelo: ' + (motor.trim() || 'Sin especificar'), 'Consulta: ' + detail.trim()].join('\n');
 }
+export const quickConsultations = [
+  { label: 'Presupuesto', message: 'Hola, 2R. Quisiera pedir un presupuesto para un trabajo de rectificación.\nMotor / modelo:\nPieza o componente:\nTrabajo a consultar:' },
+  { label: 'Plazo y disponibilidad', message: 'Hola, 2R. Quisiera consultar la disponibilidad y el plazo para un trabajo de rectificación.\nMotor / modelo:\nTrabajo a consultar:' },
+  { label: 'Ubicación y horario', message: 'Hola, 2R. Quisiera visitar el taller en Ciudad del Este. ¿Me confirman la ubicación y el horario de atención?' }
+];
 export const navigation = [
   { label: 'Servicios', href: '#servicios' },
   { label: 'Trabajos', href: '#trabajos' },

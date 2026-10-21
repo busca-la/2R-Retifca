@@ -33,6 +33,8 @@ Se publica la categoría general confirmada de rectificación de motores. No se 
 
 Consultar [dirección de arte](docs/DIRECCION-DE-ARTE-V2.md) y [medios](docs/MEDIOS-V2.md).
 
+La [adaptación para Paraguay](docs/PUBLICO-PARAGUAY.md) documenta las fuentes del INE y RAE/ASALE y su aplicación comercial. El documento usa `es-PY`, consultas preparadas por WhatsApp y acceso móvil a llamada y mapa. La barra de contacto aparece después de la hero y se oculta durante el uso del menú, el visor o el formulario.
+
 ## Configuración
 
 Se conservan las variables opcionales de `.env.example` para contacto. Los valores oficiales están incluidos como respaldo. Si se cambia el número, ubicación o dominio, actualizar también los datos estructurados de `index.html`, el sitemap y los metadatos sociales.
