@@ -179,7 +179,7 @@ function About() {
         )}
         <div className="about-photo-shade"></div>
         <div className="photo-corner"><span>2R</span><span>— RECTIFICADORA</span></div>
-        <span className="photo-caption">IMAGEN ILUSTRATIVA</span>
+        <span className="photo-caption">{realPhotos['./assets/2r/tapa-rectificada-03.webp'] ? 'TRABAJO DE 2R' : 'IDENTIDAD VISUAL 2R'}</span>
       </div>
       <div className="about-copy">
         <div className="about-copy-inner reveal">
@@ -252,8 +252,13 @@ function Contact() {
       'Consulta: ' + form.detail.trim()].join('\n');
     setDraft(message);
     if (contact.whatsapp) {
-      window.open('https://wa.me/' + contact.whatsapp + '?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
-      setStatus('Abrimos WhatsApp con tu mensaje. Confirmá el envío desde la aplicación.');
+      const whatsappUrl = 'https://wa.me/' + contact.whatsapp + '?text=' + encodeURIComponent(message);
+      const popup = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      if (!popup) {
+        window.location.assign(whatsappUrl);
+      } else {
+        setStatus('Abrimos WhatsApp con tu mensaje. Confirmá el envío desde la aplicación.');
+      }
     } else if (contact.email) {
       window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent('Consulta de motor - 2R') + '&body=' + encodeURIComponent(message);
       setStatus('Se abrió tu aplicación de correo. Confirmá el envío para completar la consulta.');
