@@ -21,6 +21,10 @@ El formulario valida nombre y consulta, prepara el mensaje y abre WhatsApp en la
 
 Siete fotografías originales, dos videos reales y sus capas. Se preservan los fondos de taller y las proporciones de las piezas. La imagen con fondo editado no se utiliza. La galería puede ampliarse y cerrarse con Escape.
 
+El visor permite avanzar y retroceder con botones, flechas del teclado, miniaturas o un deslizamiento horizontal en pantallas táctiles. Home y End van a la primera y última fotografía; Escape cierra y devuelve el foco al botón original. Cada fotografía tiene una consulta contextual por WhatsApp. Al reproducir un video se pausa el anterior.
+
+La navegación señala la sección actual y muestra el avance de lectura. La fotografía de la hero responde suavemente al mouse en escritorio. Las entradas se ejecutan una sola vez; la preferencia de movimiento reducido desactiva los desplazamientos, incluso si cambia con la página abierta. No hay dependencias nuevas ni animaciones decorativas continuas.
+
 El archivo `public/logo-2r.svg` se conserva sin cambios. Las fuentes Barlow Condensed y DM Sans se sirven localmente; se incluyen sus licencias OFL. La imagen social y el icono Apple se exportan desde el mismo logo y la fotografía original, sin reconstruir el símbolo.
 
 ## Contenido comercial

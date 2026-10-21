@@ -4,6 +4,7 @@ import { ArrowDownRight, ArrowRight, ArrowUpRight, Clock, Facebook, Mail, MapPin
 import { contact, inquiryMessage, navigation, whatsappUrl } from './siteData';
 import { aboutPhoto, heroPhoto, servicePhoto } from './media';
 import WorkGallery from './WorkGallery';
+import { usePhotoMotion, useScrollNavigation } from './useInteractions';
 import './styles.css';
 
 function LogoMark({ compact = false }) {
@@ -17,6 +18,7 @@ function Header() {
   const [open, setOpen] = useState(false);
   const toggle = useRef(null);
   const header = useRef(null);
+  const activeSection = useScrollNavigation(header);
   useEffect(() => {
     const mobile = window.matchMedia('(max-width: 900px)');
     const onResize = () => { if (!mobile.matches) setOpen(false); };
@@ -52,7 +54,7 @@ function Header() {
     <div className="header-inner site-container">
       <Brand />
       <nav className={'nav-links' + (open ? ' nav-open' : '')} aria-label="Navegación principal" id="main-navigation">
-        {navigation.map(item => <a key={item.href} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>)}
+        {navigation.map(item => <a key={item.href} href={item.href} aria-current={activeSection === item.href ? 'location' : undefined} onClick={() => setOpen(false)}>{item.label}</a>)}
         <a className="mobile-nav-cta" href={whatsappUrl()}>SOLICITAR PRESUPUESTO <ArrowUpRight size={18} aria-hidden="true" /></a>
       </nav>
       <a className="header-cta" href={whatsappUrl()}><MessageCircle size={17} aria-hidden="true" /> WHATSAPP <ArrowUpRight size={16} aria-hidden="true" /></a>
@@ -67,6 +69,7 @@ function SectionLabel({ children }) {
   return <p className="section-label"><span className="label-dash" aria-hidden="true" />{children}</p>;
 }
 function Hero() {
+  const photo = usePhotoMotion();
   return <section id="inicio" className="hero" aria-labelledby="hero-title">
     <div className="hero-container site-container">
       <div className="hero-main">
@@ -80,7 +83,7 @@ function Hero() {
           </div>
           <p className="hero-contact-note">Consultanos directamente por WhatsApp.</p>
         </div>
-        <figure className="hero-photo">
+        <figure className="hero-photo" ref={photo}>
           <img src={heroPhoto.url} srcSet={heroPhoto.small + ' 640w, ' + heroPhoto.url + ' 1250w'} sizes="(max-width: 900px) calc(100vw - 40px), 48vw" alt="Bloque de cuatro cilindros en el taller de Rectificadora 2R" width={heroPhoto.width} height={heroPhoto.height} fetchPriority="high" decoding="async" />
           <figcaption><span>BLOQUE DE MOTOR</span><span>EN EL TALLER / 2R</span></figcaption>
         </figure>
@@ -182,10 +185,19 @@ function Footer() {
 function App() {
   useEffect(() => {
     const targets = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold: 0.06 });
-    targets.forEach(target => { target.classList.add('reveal-ready'); observer.observe(target); });
-    return () => observer.disconnect();
+    const configure = () => {
+      observer.disconnect();
+      targets.forEach(target => {
+        if (motion.matches) target.classList.add('visible');
+        else if (!target.classList.contains('visible')) { target.classList.add('reveal-ready'); observer.observe(target); }
+      });
+    };
+    configure();
+    motion.addEventListener('change', configure);
+    return () => { observer.disconnect(); motion.removeEventListener('change', configure); };
   }, []);
   return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><About /><LocationAndTrust /><Contact /></main><Footer /></>;
 }
