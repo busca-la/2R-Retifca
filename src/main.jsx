@@ -253,12 +253,8 @@ function Contact() {
     setDraft(message);
     if (contact.whatsapp) {
       const whatsappUrl = 'https://wa.me/' + contact.whatsapp + '?text=' + encodeURIComponent(message);
-      const popup = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      if (!popup) {
-        window.location.assign(whatsappUrl);
-      } else {
-        setStatus('Abrimos WhatsApp con tu mensaje. Confirmá el envío desde la aplicación.');
-      }
+      // Same-tab navigation avoids popup blockers on Safari and mobile browsers.
+      window.location.assign(whatsappUrl);
     } else if (contact.email) {
       window.location.href = 'mailto:' + contact.email + '?subject=' + encodeURIComponent('Consulta de motor - 2R') + '&body=' + encodeURIComponent(message);
       setStatus('Se abrió tu aplicación de correo. Confirmá el envío para completar la consulta.');
