@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Clock, Facebook, Mail, MapPin, Menu, MessageCircle, Phone, Star, X } from 'lucide-react';
 import { contact, inquiryMessage, navigation, quickConsultations, whatsappUrl } from './siteData';
-import { aboutPhoto, heroPhoto, servicePhoto } from './media';
+import { heroPhoto, servicePhoto } from './media';
 import WorkGallery from './WorkGallery';
 import { usePhotoMotion, useScrollNavigation } from './useInteractions';
 import './styles.css';
@@ -112,18 +112,10 @@ function Services() {
     </div>
   </section>;
 }
-function About() {
-  return <section id="nosotros" className="about-section section-space" aria-labelledby="about-title">
-    <div className="site-container about-layout">
-      <figure className="about-photo reveal"><img src={aboutPhoto.url} alt="Tapa de motor sobre la maquinaria del taller de 2R" width={aboutPhoto.width} height={aboutPhoto.height} loading="lazy" decoding="async" /><figcaption>UNA MIRADA AL TRABAJO DE 2R.</figcaption></figure>
-      <div className="about-copy reveal"><SectionLabel>03 / SOBRE 2R</SectionLabel><h2 id="about-title">El motor, desde<br /><em>cada una de sus piezas.</em></h2><p>Rectificadora de motores y componentes en Ciudad del Este.</p><p>Mirá nuestros trabajos reales y consultá tu presupuesto por WhatsApp.</p><a className="text-link" href={whatsappUrl('Hola, 2R. Me gustaría consultar por mi motor. ')}>HABLEMOS DE TU MOTOR <ArrowUpRight size={18} aria-hidden="true" /></a></div>
-    </div>
-  </section>;
-}
 function LocationAndTrust() {
   return <section className="location-section section-space" id="ubicacion" aria-labelledby="location-title">
     <div className="site-container">
-      <div className="location-heading reveal"><SectionLabel>04 / ENCONTRANOS</SectionLabel><h2 id="location-title">Estamos en<br /><em>Ciudad del Este.</em></h2><p>Encontrá el taller y consultá nuestros horarios.</p></div>
+      <div className="location-heading reveal"><SectionLabel>03 / ENCONTRANOS</SectionLabel><h2 id="location-title">Estamos en<br /><em>Ciudad del Este.</em></h2><p>Encontrá el taller y consultá nuestros horarios.</p></div>
       <div className="location-grid reveal">
         <article className="location-card"><MapPin size={25} aria-hidden="true" /><h3>Cómo llegar al taller</h3><p>{contact.address}, Paraguay.</p><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER UBICACIÓN EN MAPS <ArrowUpRight size={17} aria-hidden="true" /></a></article>
         <article className="location-card"><Star size={25} aria-hidden="true" /><h3>2R en Google</h3><p>Mirá nuestras reseñas en Google.</p><div className="location-actions"><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER PERFIL <ArrowUpRight size={17} aria-hidden="true" /></a><a className="subtle-link" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">Escribir una reseña <ArrowUpRight size={16} aria-hidden="true" /></a></div></article>
@@ -149,7 +141,7 @@ function Contact() {
   return <section className="contact-section section-space" id="contacto" aria-labelledby="contact-title">
     <div className="site-container contact-layout">
       <div className="contact-intro reveal">
-        <SectionLabel>05 / CONTACTO</SectionLabel><h2 id="contact-title">Hablemos<br /><em>de tu motor.</em></h2><p>Consultanos directamente por WhatsApp.</p>
+        <SectionLabel>04 / CONTACTO</SectionLabel><h2 id="contact-title">Hablemos<br /><em>de tu motor.</em></h2><p>Consultanos directamente por WhatsApp.</p>
         <div className="quick-consultations" role="group" aria-label="Consultas rápidas por WhatsApp">
           {quickConsultations.map((item, index) => <a className={'quick-consultation' + (index === 0 ? ' quick-consultation-primary' : '')} href={whatsappUrl(item.message)} key={item.label}><MessageCircle size={18} aria-hidden="true" /><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true" /></a>)}
         </div>
@@ -224,6 +216,6 @@ function App() {
     motion.addEventListener('change', configure);
     return () => { observer.disconnect(); motion.removeEventListener('change', configure); };
   }, []);
-  return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><About /><LocationAndTrust /><Contact /><MobileContactBar /></main><Footer /></>;
+  return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><LocationAndTrust /><Contact /><MobileContactBar /></main><Footer /></>;
 }
 createRoot(document.getElementById('root')).render(<App />);
