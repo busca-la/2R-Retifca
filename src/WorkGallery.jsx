@@ -91,7 +91,6 @@ export default function WorkGallery() {
           </figure>)}
         </div>
       </div>}
-      <div className="work-bottom"><p>¿Querés consultar por una pieza?</p><a className="text-link" href={whatsappUrl()}>HACER UNA CONSULTA <ArrowUpRight size={18} aria-hidden="true" /></a></div>
     </div>
     {isOpen && <dialog ref={dialog} className="photo-dialog" aria-labelledby="photo-dialog-title" aria-describedby="photo-dialog-help" onKeyDown={onPhotoKey} onCancel={() => setSelected(null)} onClick={event => { if (event.target === event.currentTarget) setSelected(null); }}>
       <div className="photo-dialog-inner">
