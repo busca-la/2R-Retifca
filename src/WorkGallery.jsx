@@ -74,7 +74,7 @@ export default function WorkGallery() {
       </div>
       <div className="work-show-controls">
         <button type="button" className="work-toggle" aria-expanded={showAll} onClick={() => setShowAll(value => !value)}>{showAll ? 'VER MENOS FOTOS' : 'VER TODAS LAS FOTOS'} <ArrowUpRight size={17} aria-hidden="true" /></button>
-        <button type="button" className="work-toggle" aria-expanded={showVideos} aria-controls="procesos" onClick={() => setShowVideos(value => !value)}>{showVideos ? 'OCULTAR VIDEOS' : 'VER VIDEOS DEL TALLER'} <Play size={16} aria-hidden="true" /></button>
+        <button type="button" className="work-toggle" aria-expanded={showVideos} onClick={() => setShowVideos(value => !value)}>{showVideos ? 'OCULTAR VIDEOS' : 'VER VIDEOS DEL TALLER'} <Play size={16} aria-hidden="true" /></button>
       </div>
       {showVideos && <div className="work-video-area" id="procesos">
         <div className="work-video-heading"><div><p className="section-label"><Play size={15} aria-hidden="true" />EN EL TALLER</p><h3>Videos del taller.</h3></div></div>
