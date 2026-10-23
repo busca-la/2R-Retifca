@@ -221,20 +221,53 @@ function Footer() {
 }
 function App() {
   useEffect(() => {
-    const targets = document.querySelectorAll('.reveal');
+    // Only opacity and a short translation: no scroll listeners or heavy effects.
     if (!('IntersectionObserver' in window)) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold: 0.06 });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        // Elements fade in when entering and gently fade out after leaving.
+        entry.target.classList.toggle('visible', entry.isIntersecting);
+      });
+    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.01 });
+
+    const prepare = element => {
+      if (!element || !element.classList.contains('reveal')) return;
+      if (motion.matches) {
+        element.classList.remove('reveal-ready', 'visible');
+      } else {
+        element.classList.add('reveal-ready');
+        observer.observe(element);
+      }
+    };
     const configure = () => {
       observer.disconnect();
-      targets.forEach(target => {
-        if (motion.matches) target.classList.add('visible');
-        else if (!target.classList.contains('visible')) { target.classList.add('reveal-ready'); observer.observe(target); }
-      });
+      document.querySelectorAll('.reveal').forEach(prepare);
     };
     configure();
+
+    // React can insert extra gallery cards and videos after the first render.
+    const dynamicContent = new MutationObserver(records => {
+      records.forEach(record => {
+        record.addedNodes.forEach(node => {
+          if (node.nodeType !== 1) return;
+          prepare(node);
+          node.querySelectorAll?.('.reveal').forEach(prepare);
+        });
+        record.removedNodes.forEach(node => {
+          if (node.nodeType !== 1) return;
+          if (node.classList?.contains('reveal')) observer.unobserve(node);
+          node.querySelectorAll?.('.reveal').forEach(element => observer.unobserve(element));
+        });
+      });
+    });
+    dynamicContent.observe(document.getElementById('contenido'), { childList: true, subtree: true });
     motion.addEventListener('change', configure);
-    return () => { observer.disconnect(); motion.removeEventListener('change', configure); };
+    return () => {
+      dynamicContent.disconnect();
+      observer.disconnect();
+      motion.removeEventListener('change', configure);
+    };
   }, []);
   return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><LocationAndContact /><MobileContactBar /></main><Footer /></>;
 }
