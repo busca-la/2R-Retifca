@@ -1,6 +1,5 @@
 import heroUploaded from '../file_000000004b04820ead1217610fcb4e60.png';
 import block from './assets/2r/bloque-cilindros-06.webp';
-import blockSmall from './assets/2r/bloque-cilindros-06-640.webp';
 import headOne from './assets/2r/tapa-rectificada-01.webp';
 import headThree from './assets/2r/tapa-rectificada-03.webp';
 import headFour from './assets/2r/tapa-terminada-04.webp';
@@ -16,7 +15,6 @@ import posterTwo from './assets/2r/proceso-cepillado-02.jpg';
 // The AI-edited workshop-background image is intentionally not included.
 export const heroPhoto = { url: heroUploaded, small: heroUploaded, width: 1536, height: 1152 };
 export const servicePhoto = { url: headFive, width: 1250, height: 938 };
-export const aboutPhoto = { url: headThree, width: 1050, height: 1400 };
 export const photos = [
   { url: block, title: 'Bloque de motor', alt: 'Bloque de cuatro cilindros sobre una mesa de trabajo en 2R', width: 1250, height: 938, layout: 'wide' },
   { url: headOne, title: 'Superficie de la tapa', alt: 'Vista completa de una tapa de motor sobre la mesa de una máquina', width: 1050, height: 1400, layout: 'portrait' },
