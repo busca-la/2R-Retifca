@@ -13,7 +13,7 @@ import posterTwo from './assets/2r/proceso-cepillado-02.jpg';
 
 // Missing customer files must fail the build rather than silently hide the gallery.
 // The AI-edited workshop-background image is intentionally not included.
-export const heroPhoto = { url: block, small: blockSmall, width: 1250, height: 938 };
+export const heroPhoto = { url: '/file_000000004b04820ead1217610fcb4e60.png', small: '/file_000000004b04820ead1217610fcb4e60.png', width: 1536, height: 1152 };
 export const servicePhoto = { url: headFive, width: 1250, height: 938 };
 export const aboutPhoto = { url: headThree, width: 1050, height: 1400 };
 export const photos = [
