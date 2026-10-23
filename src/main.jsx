@@ -98,12 +98,12 @@ function Services() {
       <div className="services-head reveal"><SectionLabel>01 / QUÉ HACEMOS</SectionLabel><h2 id="services-title">Rectificación de motores.<br /><em>Pedí tu presupuesto.</em></h2></div>
       <article className="service-overview reveal">
         <div className="service-copy">
-          <p className="section-intro">Mandanos los datos del motor, una foto de la pieza y contanos qué necesitás. Consultá el presupuesto y la disponibilidad antes de traerla al taller.</p>
+          <p className="section-intro">Consultá por tu motor o pieza. Mandanos una foto por WhatsApp.</p>
           <h3>Para solicitar tu presupuesto</h3>
           <ol className="consultation-checklist">
-            <li><span>01</span><div><strong>Marca y modelo</strong><p>Si tenés estos datos, indicá el motor o vehículo al que pertenece la pieza.</p></div></li>
-            <li><span>02</span><div><strong>Pieza o componente</strong><p>Contanos sobre qué parte necesitás consultar. Si no sabés el nombre, podés mandar una foto.</p></div></li>
-            <li><span>03</span><div><strong>Trabajo a consultar</strong><p>Describí qué necesitás y consultá el costo, el plazo y la disponibilidad por WhatsApp.</p></div></li>
+            <li><span>01</span><div><strong>Marca y modelo</strong><p>Indicá el motor o vehículo.</p></div></li>
+            <li><span>02</span><div><strong>Pieza o componente</strong><p>Mandanos una foto de la pieza.</p></div></li>
+            <li><span>03</span><div><strong>Trabajo a consultar</strong><p>Contanos qué trabajo necesitás.</p></div></li>
           </ol>
         </div>
         <figure className="service-photo"><img src={servicePhoto.url} alt="Cámaras y válvulas de una tapa de motor fotografiada en 2R" width={servicePhoto.width} height={servicePhoto.height} loading="lazy" decoding="async" /><figcaption>COMPONENTES DEL MOTOR / 2R</figcaption></figure>
@@ -116,19 +116,19 @@ function About() {
   return <section id="nosotros" className="about-section section-space" aria-labelledby="about-title">
     <div className="site-container about-layout">
       <figure className="about-photo reveal"><img src={aboutPhoto.url} alt="Tapa de motor sobre la maquinaria del taller de 2R" width={aboutPhoto.width} height={aboutPhoto.height} loading="lazy" decoding="async" /><figcaption>UNA MIRADA AL TRABAJO DE 2R.</figcaption></figure>
-      <div className="about-copy reveal"><SectionLabel>03 / SOBRE 2R</SectionLabel><h2 id="about-title">El motor, desde<br /><em>cada una de sus piezas.</em></h2><p>Somos Rectificadora de Motores 2R, en Ciudad del Este. Trabajamos en la rectificación de motores y sus componentes.</p><p>Conocé el trabajo del taller en nuestras fotos y videos. Para consultar presupuesto y disponibilidad, contanos qué motor o pieza tenés.</p><a className="text-link" href={whatsappUrl('Hola, 2R. Me gustaría consultar por mi motor. ')}>HABLEMOS DE TU MOTOR <ArrowUpRight size={18} aria-hidden="true" /></a></div>
+      <div className="about-copy reveal"><SectionLabel>03 / SOBRE 2R</SectionLabel><h2 id="about-title">El motor, desde<br /><em>cada una de sus piezas.</em></h2><p>Rectificadora de motores y componentes en Ciudad del Este.</p><p>Mirá nuestros trabajos reales y consultá tu presupuesto por WhatsApp.</p><a className="text-link" href={whatsappUrl('Hola, 2R. Me gustaría consultar por mi motor. ')}>HABLEMOS DE TU MOTOR <ArrowUpRight size={18} aria-hidden="true" /></a></div>
     </div>
   </section>;
 }
 function LocationAndTrust() {
   return <section className="location-section section-space" id="ubicacion" aria-labelledby="location-title">
     <div className="site-container">
-      <div className="location-heading reveal"><SectionLabel>04 / ENCONTRANOS</SectionLabel><h2 id="location-title">Estamos en<br /><em>Ciudad del Este.</em></h2><p>Ubicación, contacto y experiencias de clientes en nuestros canales oficiales.</p></div>
+      <div className="location-heading reveal"><SectionLabel>04 / ENCONTRANOS</SectionLabel><h2 id="location-title">Estamos en<br /><em>Ciudad del Este.</em></h2><p>Encontrá el taller y consultá nuestros horarios.</p></div>
       <div className="location-grid reveal">
         <article className="location-card"><MapPin size={25} aria-hidden="true" /><h3>Cómo llegar al taller</h3><p>{contact.address}, Paraguay.</p><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER UBICACIÓN EN MAPS <ArrowUpRight size={17} aria-hidden="true" /></a></article>
-        <article className="location-card"><Star size={25} aria-hidden="true" /><h3>2R en Google</h3><p>Abrí el perfil del taller para ver su ubicación y las reseñas disponibles. Si ya trabajaste con 2R, podés compartir tu experiencia.</p><div className="location-actions"><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER PERFIL <ArrowUpRight size={17} aria-hidden="true" /></a><a className="subtle-link" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">Escribir una reseña <ArrowUpRight size={16} aria-hidden="true" /></a></div></article>
+        <article className="location-card"><Star size={25} aria-hidden="true" /><h3>2R en Google</h3><p>Mirá nuestras reseñas en Google.</p><div className="location-actions"><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER PERFIL <ArrowUpRight size={17} aria-hidden="true" /></a><a className="subtle-link" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">Escribir una reseña <ArrowUpRight size={16} aria-hidden="true" /></a></div></article>
       </div>
-      <div className="hours-panel"><Clock size={20} aria-hidden="true" /><div><h3>Horario de atención</h3><p>Lunes a viernes: 08:00–17:00</p><p>Sábados: 08:00–12:00</p><p>Domingos: cerrado</p><small>Horarios publicados en Google Maps el 23/10/2026. Para feriados, <a href={whatsappUrl("Hola, 2R. ¿Me confirman el horario de atención?")}>consultá por WhatsApp</a>.</small></div></div>
+      <div className="hours-panel"><Clock size={20} aria-hidden="true" /><div><h3>Horario de atención</h3><p>Lunes a viernes: 08:00–17:00</p><p>Sábados: 08:00–12:00</p><p>Domingos: cerrado</p><small>Horarios habituales. En feriados, <a href={whatsappUrl("Hola, 2R. ¿Me confirman el horario de atención?")}>consultá por WhatsApp</a>.</small></div></div>
     </div>
   </section>;
 }
@@ -149,7 +149,7 @@ function Contact() {
   return <section className="contact-section section-space" id="contacto" aria-labelledby="contact-title">
     <div className="site-container contact-layout">
       <div className="contact-intro reveal">
-        <SectionLabel>05 / CONTACTO</SectionLabel><h2 id="contact-title">Hablemos<br /><em>de tu motor.</em></h2><p>Elegí tu consulta para hablar con 2R por WhatsApp. En el chat podés agregar fotos de la pieza.</p>
+        <SectionLabel>05 / CONTACTO</SectionLabel><h2 id="contact-title">Hablemos<br /><em>de tu motor.</em></h2><p>Consultanos directamente por WhatsApp.</p>
         <div className="quick-consultations" role="group" aria-label="Consultas rápidas por WhatsApp">
           {quickConsultations.map((item, index) => <a className={'quick-consultation' + (index === 0 ? ' quick-consultation-primary' : '')} href={whatsappUrl(item.message)} key={item.label}><MessageCircle size={18} aria-hidden="true" /><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true" /></a>)}
         </div>
