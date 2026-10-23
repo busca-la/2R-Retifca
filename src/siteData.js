@@ -25,6 +25,6 @@ export const quickConsultations = [
 export const navigation = [
   { label: 'Servicios', href: '#servicios' },
   { label: 'Trabajos', href: '#trabajos' },
-  { label: 'Nosotros', href: '#nosotros' },
+  { label: 'Ubicación', href: '#ubicacion' },
   { label: 'Contacto', href: '#contacto' }
 ];
