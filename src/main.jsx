@@ -84,8 +84,8 @@ function Hero() {
           <p className="hero-contact-note">Consultanos directamente por WhatsApp.</p>
         </div>
         <figure className="hero-photo" ref={photo}>
-          <img src={heroPhoto.url} srcSet={heroPhoto.small + ' 640w, ' + heroPhoto.url + ' 1250w'} sizes="(max-width: 900px) calc(100vw - 40px), 48vw" alt="Bloque de cuatro cilindros en el taller de Rectificadora 2R" width={heroPhoto.width} height={heroPhoto.height} fetchPriority="high" decoding="async" />
-          <figcaption><span>BLOQUE DE MOTOR</span><span>EN EL TALLER / 2R</span></figcaption>
+          <img src={heroPhoto.url} srcSet={heroPhoto.small + ' 640w, ' + heroPhoto.url + ' 1250w'} sizes="(max-width: 900px) calc(100vw - 40px), 48vw" alt="Bloque de motor de cuatro cilindros sobre fondo negro" width={heroPhoto.width} height={heroPhoto.height} fetchPriority="high" decoding="async" />
+          <figcaption><span>BLOQUE DE MOTOR</span><span>RECTIFICADORA 2R</span></figcaption>
         </figure>
       </div>
       <div className="hero-bottom"><span>PIEZAS. MEDIDAS. DETALLES.</span><a href="#ubicacion">CÓMO LLEGAR <ArrowDownRight size={18} aria-hidden="true" /></a></div>
@@ -128,7 +128,7 @@ function LocationAndTrust() {
         <article className="location-card"><MapPin size={25} aria-hidden="true" /><h3>Cómo llegar al taller</h3><p>{contact.address}, Paraguay.</p><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER UBICACIÓN EN MAPS <ArrowUpRight size={17} aria-hidden="true" /></a></article>
         <article className="location-card"><Star size={25} aria-hidden="true" /><h3>2R en Google</h3><p>Abrí el perfil del taller para ver su ubicación y las reseñas disponibles. Si ya trabajaste con 2R, podés compartir tu experiencia.</p><div className="location-actions"><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER PERFIL <ArrowUpRight size={17} aria-hidden="true" /></a><a className="subtle-link" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">Escribir una reseña <ArrowUpRight size={16} aria-hidden="true" /></a></div></article>
       </div>
-      <p className="hours-note"><Clock size={17} aria-hidden="true" /> Antes de venir, <a href={whatsappUrl('Hola, 2R. ¿Podrían confirmarme el horario de atención de hoy?')}>confirmá el horario de atención por WhatsApp <ArrowUpRight size={15} aria-hidden="true" /></a>.</p>
+      <div className="hours-panel"><Clock size={20} aria-hidden="true" /><div><h3>Horario de atención</h3><p>Lunes a viernes: 08:00–17:00</p><p>Sábados: 08:00–12:00</p><p>Domingos: cerrado</p><small>Horarios publicados en Google Maps el 23/10/2026. Para feriados, <a href={whatsappUrl("Hola, 2R. ¿Me confirman el horario de atención?")}>consultá por WhatsApp</a>.</small></div></div>
     </div>
   </section>;
 }
