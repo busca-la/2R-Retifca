@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Clock, Facebook, Mail, MapPin, Menu, MessageCircle, Phone, Star, X } from 'lucide-react';
-import { contact, inquiryMessage, navigation, quickConsultations, whatsappUrl } from './siteData';
+import { contact, inquiryMessage, navigation, whatsappUrl } from './siteData';
 import { heroPhoto, servicePhoto } from './media';
 import WorkGallery from './WorkGallery';
 import { usePhotoMotion, useScrollNavigation } from './useInteractions';
@@ -81,14 +81,14 @@ function Hero() {
             <a href={whatsappUrl()} className="button button-yellow">CONSULTAR POR WHATSAPP <ArrowUpRight size={19} aria-hidden="true" /></a>
             <a href="#trabajos" className="text-link">VER TRABAJOS REALES <ArrowRight size={18} aria-hidden="true" /></a>
           </div>
-          <p className="hero-contact-note">Consultanos directamente por WhatsApp.</p>
+          
         </div>
         <figure className="hero-photo" ref={photo}>
           <img src={heroPhoto.url} srcSet={heroPhoto.small + ' 640w, ' + heroPhoto.url + ' 1250w'} sizes="(max-width: 900px) calc(100vw - 40px), 48vw" alt="Bloque de motor de cuatro cilindros sobre fondo negro" width={heroPhoto.width} height={heroPhoto.height} fetchPriority="high" decoding="async" />
           <figcaption><span>BLOQUE DE MOTOR</span><span>RECTIFICADORA 2R</span></figcaption>
         </figure>
       </div>
-      <div className="hero-bottom"><span>PIEZAS. MEDIDAS. DETALLES.</span><a href="#ubicacion">CÓMO LLEGAR <ArrowDownRight size={18} aria-hidden="true" /></a></div>
+      <div className="hero-bottom"><a href="#ubicacion">CÓMO LLEGAR <ArrowDownRight size={18} aria-hidden="true" /></a></div>
     </div>
   </section>;
 }
@@ -112,61 +112,76 @@ function Services() {
     </div>
   </section>;
 }
-function LocationAndTrust() {
-  return <section className="location-section section-space" id="ubicacion" aria-labelledby="location-title">
-    <div className="site-container">
-      <div className="location-heading reveal"><SectionLabel>03 / ENCONTRANOS</SectionLabel><h2 id="location-title">Estamos en<br /><em>Ciudad del Este.</em></h2><p>Encontrá el taller y consultá nuestros horarios.</p></div>
-      <div className="location-grid reveal">
-        <article className="location-card"><MapPin size={25} aria-hidden="true" /><h3>Cómo llegar al taller</h3><p>{contact.address}, Paraguay.</p><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER UBICACIÓN EN MAPS <ArrowUpRight size={17} aria-hidden="true" /></a></article>
-        <article className="location-card"><Star size={25} aria-hidden="true" /><h3>2R en Google</h3><p>Mirá nuestras reseñas en Google.</p><div className="location-actions"><a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">VER PERFIL <ArrowUpRight size={17} aria-hidden="true" /></a><a className="subtle-link" href={contact.reviewUrl} target="_blank" rel="noopener noreferrer">Escribir una reseña <ArrowUpRight size={16} aria-hidden="true" /></a></div></article>
-      </div>
-      <div className="hours-panel"><Clock size={20} aria-hidden="true" /><div><h3>Horario de atención</h3><p>Lunes a viernes: 08:00–17:00</p><p>Sábados: 08:00–12:00</p><p>Domingos: cerrado</p><small>Horarios habituales. En feriados, <a href={whatsappUrl("Hola, 2R. ¿Me confirman el horario de atención?")}>consultá por WhatsApp</a>.</small></div></div>
-    </div>
-  </section>;
-}
-function Contact() {
+function LocationAndContact() {
   const [form, setForm] = useState({ name: '', motor: '', detail: '' });
   const [errors, setErrors] = useState({});
-  const setField = (field, value) => { setForm(current => ({ ...current, [field]: value })); setErrors(current => ({ ...current, [field]: '' })); };
+  const setField = (field, value) => {
+    setForm(current => ({ ...current, [field]: value }));
+    setErrors(current => ({ ...current, [field]: '' }));
+  };
   function submit(event) {
     event.preventDefault();
     const nextErrors = {};
     if (!form.name.trim()) nextErrors.name = 'Escribí tu nombre.';
     if (!form.detail.trim()) nextErrors.detail = 'Contanos brevemente qué necesitás.';
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length) { document.getElementById(nextErrors.name ? 'full-name' : 'consultation')?.focus(); return; }
-    // The customer confirms the send inside WhatsApp. No site-side message send.
+    if (Object.keys(nextErrors).length) {
+      document.getElementById(nextErrors.name ? 'full-name' : 'consultation')?.focus();
+      return;
+    }
     window.location.assign(whatsappUrl(inquiryMessage(form)));
   }
-  return <section className="contact-section section-space" id="contacto" aria-labelledby="contact-title">
-    <div className="site-container contact-layout">
-      <div className="contact-intro reveal">
-        <SectionLabel>04 / CONTACTO</SectionLabel><h2 id="contact-title">Hablemos<br /><em>de tu motor.</em></h2><p>Consultanos directamente por WhatsApp.</p>
-        <div className="quick-consultations" role="group" aria-label="Consultas rápidas por WhatsApp">
-          {quickConsultations.map((item, index) => <a className={'quick-consultation' + (index === 0 ? ' quick-consultation-primary' : '')} href={whatsappUrl(item.message)} key={item.label}><MessageCircle size={18} aria-hidden="true" /><span>{item.label}</span><ArrowUpRight size={17} aria-hidden="true" /></a>)}
-        </div>
-        <div className="contact-lines">
-          <a href={'tel:+' + contact.whatsapp}><Phone size={19} aria-hidden="true" /><span>{contact.phone}</span><ArrowUpRight size={17} aria-hidden="true" /></a>
-          <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><MapPin size={19} aria-hidden="true" /><span>{contact.address}</span><ArrowUpRight size={17} aria-hidden="true" /></a>
-          <a href={contact.facebook} target="_blank" rel="noopener noreferrer"><Facebook size={19} aria-hidden="true" /><span>2R en Facebook</span><ArrowUpRight size={17} aria-hidden="true" /></a>
-          {contact.email && <a href={'mailto:' + contact.email}><Mail size={19} aria-hidden="true" /><span>{contact.email}</span><ArrowUpRight size={17} aria-hidden="true" /></a>}
-        </div>
+  return <section className="location-section section-space" id="ubicacion" aria-labelledby="location-title">
+    <div className="site-container">
+      <div className="location-heading reveal">
+        <SectionLabel>03 / UBICACIÓN Y CONTACTO</SectionLabel>
+        <h2 id="location-title">Encontranos.<br /><em>Hablemos de tu motor.</em></h2>
       </div>
-      <div className="form-panel reveal">
-        <p className="form-eyebrow">CONSULTA CON DETALLES / 2R</p><h3>Contanos qué necesitás.</h3>
-        <form onSubmit={submit} className="inquiry-form" noValidate>
-          <label htmlFor="full-name">Tu nombre <span>(obligatorio)</span></label>
-          <input id="full-name" name="name" required autoComplete="name" maxLength={90} placeholder="¿Cómo te llamás?" value={form.name} onChange={e => setField('name', e.target.value)} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'name-error' : undefined} />
-          {errors.name && <p className="field-error" id="name-error" role="alert">{errors.name}</p>}
-          <label htmlFor="motor-model">Motor / modelo <span>(opcional)</span></label>
-          <input id="motor-model" name="motor" maxLength={120} placeholder="Marca, modelo o tipo de motor" value={form.motor} onChange={e => setField('motor', e.target.value)} />
-          <label htmlFor="consultation">¿Qué necesitás? <span>(obligatorio)</span></label>
-          <textarea id="consultation" name="detail" required maxLength={1200} rows={4} placeholder="Describí brevemente tu consulta…" value={form.detail} onChange={e => setField('detail', e.target.value)} aria-invalid={Boolean(errors.detail)} aria-describedby={errors.detail ? 'detail-error' : undefined} />
-          {errors.detail && <p className="field-error" id="detail-error" role="alert">{errors.detail}</p>}
-          <button className="submit-button" type="submit">CONTINUAR EN WHATSAPP <ArrowUpRight size={19} aria-hidden="true" /></button>
-          <p className="form-helper">Se abrirá WhatsApp con tu consulta preparada. Vos confirmás el envío.</p>
-        </form>
+      <div className="location-grid reveal">
+        <article className="location-card">
+          <MapPin size={27} aria-hidden="true" />
+          <h3>Cómo llegar</h3>
+          <p>{contact.address}, Paraguay.</p>
+          <a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">ABRIR GOOGLE MAPS <ArrowUpRight size={18} aria-hidden="true" /></a>
+          <div className="location-hours">
+            <h4><Clock size={18} aria-hidden="true" /> Horario de atención</h4>
+            <p>Lun. a vie. <strong>08:00–17:00</strong></p>
+            <p>Sábados <strong>08:00–12:00</strong></p>
+            <p>Domingos <strong>Cerrado</strong></p>
+            <small>En feriados, <a href={whatsappUrl('Hola, 2R. ¿Me confirman el horario de atención?')}>confirmá el horario</a>.</small>
+          </div>
+        </article>
+        <article className="location-card location-contact-card" id="contacto">
+          <MessageCircle size={27} aria-hidden="true" />
+          <h3>Pedí tu presupuesto</h3>
+          <p>Mandanos una foto del motor o la pieza.</p>
+          <a href={whatsappUrl()} className="button button-yellow">ESCRIBIR POR WHATSAPP <ArrowUpRight size={19} aria-hidden="true" /></a>
+          <a className="contact-phone" href={'tel:+' + contact.whatsapp}><Phone size={19} aria-hidden="true" /> {contact.phone}</a>
+          {contact.email && <a className="contact-phone" href={'mailto:' + contact.email}><Mail size={19} aria-hidden="true" /> {contact.email}</a>}
+          <div className="location-social-links">
+            <a href={contact.mapUrl} target="_blank" rel="noopener noreferrer"><Star size={17} aria-hidden="true" /> Reseñas en Google <ArrowUpRight size={15} aria-hidden="true" /></a>
+            <a href={contact.facebook} target="_blank" rel="noopener noreferrer"><Facebook size={17} aria-hidden="true" /> Facebook <ArrowUpRight size={15} aria-hidden="true" /></a>
+          </div>
+        </article>
       </div>
+      <details className="contact-form-details reveal">
+        <summary>¿Querés dejar una consulta con más detalles? <ArrowRight size={19} aria-hidden="true" /></summary>
+        <div className="form-panel">
+          <h3>Tu consulta</h3>
+          <form onSubmit={submit} className="inquiry-form" noValidate>
+            <label htmlFor="full-name">Tu nombre <span>(obligatorio)</span></label>
+            <input id="full-name" name="name" required autoComplete="name" maxLength={90} placeholder="¿Cómo te llamás?" value={form.name} onChange={e => setField('name', e.target.value)} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'name-error' : undefined} />
+            {errors.name && <p className="field-error" id="name-error" role="alert">{errors.name}</p>}
+            <label htmlFor="motor-model">Motor / modelo <span>(opcional)</span></label>
+            <input id="motor-model" name="motor" maxLength={120} placeholder="Marca, modelo o tipo de motor" value={form.motor} onChange={e => setField('motor', e.target.value)} />
+            <label htmlFor="consultation">¿Qué necesitás? <span>(obligatorio)</span></label>
+            <textarea id="consultation" name="detail" required maxLength={1200} rows={4} placeholder="Describí brevemente tu consulta…" value={form.detail} onChange={e => setField('detail', e.target.value)} aria-invalid={Boolean(errors.detail)} aria-describedby={errors.detail ? 'detail-error' : undefined} />
+            {errors.detail && <p className="field-error" id="detail-error" role="alert">{errors.detail}</p>}
+            <button className="submit-button" type="submit">CONTINUAR EN WHATSAPP <ArrowUpRight size={19} aria-hidden="true" /></button>
+            <p className="form-helper">Vos confirmás el envío en WhatsApp.</p>
+          </form>
+        </div>
+      </details>
     </div>
   </section>;
 }
@@ -195,8 +210,13 @@ function MobileContactBar() {
 }
 function Footer() {
   return <footer className="footer">
-    <div className="site-container footer-main"><div><Brand compact /><p>RECTIFICADORA DE MOTORES<br />CIUDAD DEL ESTE, PARAGUAY.</p></div><nav className="footer-links" aria-label="Navegación del pie">{navigation.map(item => <a href={item.href} key={item.href}>{item.label}</a>)}<a href={contact.mapUrl} target="_blank" rel="noopener noreferrer">Ubicación <ArrowUpRight size={14} aria-hidden="true" /></a></nav><a className="back-top" href="#inicio" aria-label="Volver arriba"><ArrowUpRight size={23} aria-hidden="true" /></a></div>
-    <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} RECTIFICADORA DE MOTORES 2R</span><span>PRECISIÓN QUE MUEVE MOTORES.</span></div>
+    <div className="site-container footer-main footer-main-compact">
+      <Brand compact />
+      <a className="footer-direct-link" href={whatsappUrl()}>WHATSAPP <ArrowUpRight size={16} aria-hidden="true" /></a>
+      <a className="footer-direct-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">CÓMO LLEGAR <ArrowUpRight size={16} aria-hidden="true" /></a>
+      <a className="back-top" href="#inicio" aria-label="Volver arriba"><ArrowUpRight size={23} aria-hidden="true" /></a>
+    </div>
+    <div className="site-container footer-bottom"><span>© {new Date().getFullYear()} RECTIFICADORA DE MOTORES 2R · CIUDAD DEL ESTE</span></div>
   </footer>;
 }
 function App() {
@@ -216,6 +236,6 @@ function App() {
     motion.addEventListener('change', configure);
     return () => { observer.disconnect(); motion.removeEventListener('change', configure); };
   }, []);
-  return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><LocationAndTrust /><Contact /><MobileContactBar /></main><Footer /></>;
+  return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><LocationAndContact /><MobileContactBar /></main><Footer /></>;
 }
 createRoot(document.getElementById('root')).render(<App />);
