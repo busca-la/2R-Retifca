@@ -335,3 +335,25 @@ body.menu-is-open .mobile-contact-bar,body:has(.photo-dialog[open]) .mobile-cont
 .hours-panel small{display:block;color:var(--muted);font-size:12px;line-height:1.7;margin-top:12px}
 .hours-panel a{text-decoration:underline;text-underline-offset:3px;color:var(--yellow)}
 @media(max-width:620px){.hours-panel{padding:20px;gap:12px}.hero-photo figcaption{font-size:10px}.hero-bottom{font-size:10px}}
+
+/* Tipografía legible y contenido más directo */
+.section-label{font-size:13px}
+.hero-eyebrow,.hero-contact-note,.hero-bottom{font-size:12px}
+.hero-photo figcaption,.service-photo figcaption,.about-photo figcaption{font-size:12px}
+.button,.text-link,.header-cta{font-size:13px}
+.service-copy h3,.consultation-checklist strong{font-size:18px}
+.consultation-checklist p,.service-cta p span{font-size:16px;line-height:1.6}
+.consultation-checklist li{padding-block:16px}
+.about-copy>p:not(.section-label),.location-heading>p:last-child,.location-card>p,.contact-intro>p:not(.section-label){font-size:17px;line-height:1.65}
+.quick-consultation,.contact-lines>a,.subtle-link{font-size:15px}
+.hours-panel p{font-size:16px}
+.hours-panel small{font-size:14px}
+@media(max-width:620px){
+ .section-label{font-size:12px}
+ .hero-eyebrow,.hero-contact-note,.hero-bottom{font-size:12px}
+ .hero-photo figcaption{font-size:12px}
+ .section-intro,.consultation-checklist p,.about-copy>p:not(.section-label),.location-card>p,.contact-intro>p:not(.section-label){font-size:16px;line-height:1.6}
+ .button,.text-link,.quick-consultation{font-size:14px}
+ .hours-panel p{font-size:16px}
+ .hours-panel small{font-size:13px}
+}
