@@ -121,8 +121,9 @@ body.menu-is-open .mobile-contact-bar,body:has(.photo-dialog[open]) .mobile-cont
 .back-top{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #51514c;border-radius:8px;color:var(--yellow);transition:background 200ms}
 .back-top:hover{background:#19170c}
 .footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-block:24px;border-top:1px solid var(--border);font-size:9px;letter-spacing:.06em;color:#aaa9a4;line-height:1.7}
-.reveal-ready{opacity:0;transform:translateY(12px);transition:opacity 400ms var(--ease),transform 400ms var(--ease)}
-.reveal-ready.visible{opacity:1;transform:none}
+/* Lightweight entrance/exit transitions, powered by IntersectionObserver. */
+.reveal-ready{opacity:0;transform:translate3d(0,9px,0);transition:opacity 420ms var(--ease),transform 420ms var(--ease)}
+.reveal-ready.visible,.reveal-ready:focus-within{opacity:1;transform:none}
 @keyframes hero-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes photo-enter{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:no-preference){
