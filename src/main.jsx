@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Clock, Facebook, Mail, MapPin, Menu, MessageCircle, Phone, Star, X } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 import { contact, inquiryMessage, navigation, whatsappUrl } from './siteData';
 import { heroPhoto, servicePhoto } from './media';
 import WorkGallery from './WorkGallery';
@@ -269,6 +270,6 @@ function App() {
       motion.removeEventListener('change', configure);
     };
   }, []);
-  return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><LocationAndContact /><MobileContactBar /></main><Footer /></>;
+  return <><a className="skip-link" href="#contenido">Saltar al contenido</a><Header /><main id="contenido"><Hero /><Services /><WorkGallery /><LocationAndContact /><MobileContactBar /></main><Footer /><Analytics /></>;
 }
 createRoot(document.getElementById('root')).render(<App />);
