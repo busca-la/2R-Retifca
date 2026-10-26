@@ -4,6 +4,15 @@ import { photos, videos } from './media';
 import { whatsappUrl } from './siteData';
 import './WorkGallery.css';
 
+function previewSizes(index, expanded) {
+  const wideOnMobile = [0, 3, 6].includes(index);
+  const columns = index === 0 ? 6 : index === 3 && !expanded ? 12 : [3, 6].includes(index) ? 8 : index < 3 ? 3 : 4;
+  const fraction = columns / 12;
+  // The grid uses 18px desktop gaps, 14px tablet gaps and a 1200px cap.
+  const width = (container, gap) => `calc((${container} + ${gap}px) * ${fraction} - ${gap}px)`;
+  return `${wideOnMobile ? '(max-width: 620px) calc(100vw - 40px)' : '(max-width: 620px) calc((100vw - 52px) / 2)'}, (max-width: 900px) ${width('100vw - 48px', 14)}, (max-width: 1100px) ${width('100vw - 64px', 18)}, (max-width: 1280px) ${width('100vw - 80px', 18)}, ${(1200 + 18) * fraction - 18}px`;
+}
+
 export default function WorkGallery() {
   const [selected, setSelected] = useState(null);
   const [showAll, setShowAll] = useState(false);
@@ -66,7 +75,7 @@ export default function WorkGallery() {
       <div className={"work-grid " + (showAll ? "work-grid-expanded" : "work-grid-compact")}>
         {photos.slice(0, showAll ? photos.length : 4).map((entry, index) => <figure className={'work-card reveal work-' + entry.layout} key={entry.url}>
           <button className="work-image-button" type="button" aria-label={'Ampliar foto: ' + entry.title} onClick={event => { opener.current = event.currentTarget; setSelected(index); }}>
-            <img src={entry.url} alt={entry.alt} width={entry.width} height={entry.height} loading="lazy" decoding="async" />
+            <img src={entry.preview} srcSet={entry.srcSet} sizes={previewSizes(index, showAll)} alt={entry.alt} width={entry.width} height={entry.height} loading="lazy" decoding="async" />
             <span className="work-expand"><Expand size={18} aria-hidden="true" /><span>Ampliar</span></span>
           </button>
           <figcaption><span>{entry.title}</span><span>{String(index + 1).padStart(2, '0')}</span></figcaption>
@@ -106,7 +115,7 @@ export default function WorkGallery() {
           </div>
         </div>
         <div className="photo-thumbnails" ref={thumbnails} role="group" aria-label="Todas las fotografías">
-          {photos.map((photo, index) => <button type="button" key={photo.url} aria-label={'Ver fotografía ' + (index + 1) + ': ' + photo.title} aria-pressed={selected === index} onClick={() => setSelected(index)}><img src={photo.url} alt="" width={photo.width} height={photo.height} loading="lazy" decoding="async" /></button>)}
+          {photos.map((photo, index) => <button type="button" key={photo.url} aria-label={'Ver fotografía ' + (index + 1) + ': ' + photo.title} aria-pressed={selected === index} onClick={() => setSelected(index)}><img src={photo.preview} alt="" width={photo.width} height={photo.height} loading="lazy" decoding="async" /></button>)}
         </div>
         <div className="photo-dialog-bottom"><p id="photo-dialog-help">Usá las flechas o deslizá para ver más.</p><a className="text-link" href={whatsappUrl('Hola, 2R. Estoy viendo la fotografía «' + photos[selected].title + '». Quisiera hacer una consulta sobre mi motor o componente: ')}>CONSULTAR ESTE TRABAJO <ArrowUpRight size={18} aria-hidden="true" /></a></div>
       </div>

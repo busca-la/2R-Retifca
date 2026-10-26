@@ -70,6 +70,7 @@ function SectionLabel({ children }) {
 }
 function Hero() {
   const photo = usePhotoMotion();
+  const photoSizes = '(max-width: 620px) calc(100vw - 40px), (max-width: 900px) calc(100vw - 48px), (max-width: 1100px) calc((100vw - 64px) * .48), (max-width: 1280px) calc((100vw - 80px) * .48), 576px';
   return <section id="inicio" className="hero" aria-labelledby="hero-title">
     <div className="hero-container site-container">
       <div className="hero-main">
@@ -84,7 +85,10 @@ function Hero() {
           
         </div>
         <figure className="hero-photo" ref={photo}>
-          <img src={heroPhoto.url} srcSet={heroPhoto.small + ' 640w, ' + heroPhoto.url + ' 1250w'} sizes="(max-width: 900px) calc(100vw - 40px), 48vw" alt="Bloque de motor de cuatro cilindros sobre fondo negro" width={heroPhoto.width} height={heroPhoto.height} fetchPriority="high" decoding="async" />
+          <picture>
+            <source type="image/avif" srcSet={heroPhoto.avifSrcSet} sizes={photoSizes} />
+            <img src={heroPhoto.url} srcSet={heroPhoto.srcSet} sizes={photoSizes} alt="Bloque de motor de cuatro cilindros sobre fondo negro" width={heroPhoto.width} height={heroPhoto.height} fetchPriority="high" decoding="async" />
+          </picture>
           <figcaption><span>BLOQUE DE MOTOR</span><span>RECTIFICADORA 2R</span></figcaption>
         </figure>
       </div>
@@ -106,7 +110,7 @@ function Services() {
             <li><span>03</span><div><strong>Trabajo a consultar</strong><p>Contanos qué trabajo necesitás.</p></div></li>
           </ol>
         </div>
-        <figure className="service-photo"><img src={servicePhoto.url} alt="Cámaras y válvulas de una tapa de motor fotografiada en 2R" width={servicePhoto.width} height={servicePhoto.height} loading="lazy" decoding="async" /><figcaption>COMPONENTES DEL MOTOR / 2R</figcaption></figure>
+        <figure className="service-photo"><img src={servicePhoto.url} srcSet={servicePhoto.srcSet} sizes="(max-width: 620px) calc(100vw - 40px), (max-width: 900px) calc((100vw - 48px) * .45), 520px" alt="Cámaras y válvulas de una tapa de motor fotografiada en 2R" width={servicePhoto.width} height={servicePhoto.height} loading="lazy" decoding="async" /><figcaption>COMPONENTES DEL MOTOR / 2R</figcaption></figure>
       </article>
       <div className="service-cta reveal"><p>¿Tenés una pieza para consultar?<span>Mandá una foto y los datos del motor por WhatsApp.</span></p><a className="button button-outline" href={whatsappUrl('Hola, 2R. Quisiera consultar sobre un trabajo de rectificación. Mi motor / modelo es: ')}>CONSULTAR POR WHATSAPP <ArrowUpRight size={18} aria-hidden="true" /></a></div>
     </div>
@@ -126,7 +130,14 @@ function LocationAndContact() {
     if (!form.detail.trim()) nextErrors.detail = 'Contanos brevemente qué necesitás.';
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) {
-      document.getElementById(nextErrors.name ? 'full-name' : 'consultation')?.focus();
+      // Wait for error messages to take their space before moving focus. Native
+      // focus scrolling can otherwise leave the field behind the sticky header.
+      const invalidField = nextErrors.name ? 'full-name' : 'consultation';
+      window.requestAnimationFrame(() => {
+        const field = document.getElementById(invalidField);
+        field?.focus({ preventScroll: true });
+        field?.scrollIntoView({ block: 'center', behavior: 'auto' });
+      });
       return;
     }
     window.location.assign(whatsappUrl(inquiryMessage(form)));
@@ -145,10 +156,8 @@ function LocationAndContact() {
           <a className="text-link" href={contact.mapUrl} target="_blank" rel="noopener noreferrer">ABRIR GOOGLE MAPS <ArrowUpRight size={18} aria-hidden="true" /></a>
           <div className="location-hours">
             <h4><Clock size={18} aria-hidden="true" /> Horario de atención</h4>
-            <p>Lun. a vie. <strong>08:00–17:00</strong></p>
-            <p>Sábados <strong>08:00–12:00</strong></p>
-            <p>Domingos <strong>Cerrado</strong></p>
-            <small>En feriados, <a href={whatsappUrl('Hola, 2R. ¿Me confirman el horario de atención?')}>confirmá el horario</a>.</small>
+            <p>Consultá el horario antes de visitar el taller.</p>
+            <small><a href={whatsappUrl('Hola, 2R. ¿Me confirman el horario de atención?')}>CONFIRMAR HORARIO POR WHATSAPP</a></small>
           </div>
         </article>
         <article className="location-card location-contact-card" id="contacto">

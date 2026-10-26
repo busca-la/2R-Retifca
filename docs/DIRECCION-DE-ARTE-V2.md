@@ -25,7 +25,7 @@ Referencias inspeccionadas el 21/10/2026 a 1440×960 y 390×844, antes de cambia
 ## Decisiones implementadas
 
 - Se conserva React/Vite, el símbolo de `public/logo-2r.svg`, el amarillo #f6d21b y los canales oficiales.
-- No se utiliza `hero-bloque-2r.webp` / `11377.png`: su fondo fue editado. La hero utiliza `bloque-cilindros-06.webp`, correspondiente a la fotografía original `11339.jpg`.
+- La hero actual conserva el archivo suministrado `file_000000004b04820ead1217610fcb4e60.png`, mediante variantes AVIF/WebP con el mismo encuadre. La galería mantiene `bloque-cilindros-06.webp`, correspondiente a la fotografía original `11339.jpg`. El registro histórico de referencias anterior no sustituye una auditoría actual de esas páginas.
 - Siete fotografías sin cambio de fondo, sin filtros y sin recortes de la pieza. Los archivos conservan sus proporciones; se pueden ampliar con teclado y cerrar con Escape.
 - Los dos videos muestran bloques de motor; no se les atribuye una operación específica no confirmada. Controles nativos, `playsInline`, sin autoplay, sin loop y `preload="none"`.
 - No se agregan servicios detallados, certificaciones, estadísticas, equipos o testimonios.
