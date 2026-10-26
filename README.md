@@ -40,3 +40,20 @@ La [adaptación para Paraguay](docs/PUBLICO-PARAGUAY.md) documenta las fuentes d
 Se conservan las variables opcionales de `.env.example` para contacto. Los valores oficiales están incluidos como respaldo. Si se cambia el número, ubicación o dominio, actualizar también los datos estructurados de `index.html`, el sitemap y los metadatos sociales.
 
 El proyecto existente de Vercel publica desde la rama principal. La validación de GitHub usa el lockfile, ejecuta los tests y compila.
+
+## Optimización de imágenes
+
+Las variantes de la hero (AVIF y WebP) y las previsualizaciones WebP de la galería están versionadas. `npm ci` y el build no necesitan un procesador de imágenes. Se conservan el PNG suministrado y las fotografías originales; el visor sigue mostrando las fotografías completas.
+
+Para regenerar las variantes, instalar la herramienta opcional fuera del proyecto y ejecutar desde la raíz:
+
+```bash
+npm install --prefix /tmp/2r-media-tools --no-save --package-lock=false sharp@0.35.5
+NODE_PATH=/tmp/2r-media-tools/node_modules node scripts/optimize-images.mjs
+```
+
+La hero mantiene el mismo encuadre. El preload en `index.html` y el `picture` en `src/main.jsx` deben conservar los mismos candidatos y tamaños; así no se descargan variantes duplicadas. AVIF tiene fallback WebP. No se oculta la fotografía principal durante una animación de entrada.
+
+Los horarios siguen pendientes de confirmación: no se publican horas específicas en la página ni en los datos estructurados. La consulta de horario abre WhatsApp.
+
+`vercel.json` declara una CSP para recursos del propio sitio. Si se incorpora un servicio externo, revisar su necesidad y los destinos de la política antes de habilitarlo. Validar los headers reales en una revisión de despliegue; `vite preview` no aplica la configuración de Vercel.
